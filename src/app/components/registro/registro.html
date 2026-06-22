@@ -11,49 +11,49 @@
 
             <div class="mb-3">
               <label class="form-label">Nombre</label>
-              <input type="text" class="form-control bg-black text-light border-secondary">
+              <input type="text" class="form-control bg-black text-light border-secondary" [formField]="registerForm.nombre">
             </div>
 
             <div class="mb-3">
               <label class="form-label">Apellido</label>
-              <input type="text" class="form-control bg-black text-light border-secondary">
+              <input type="text" class="form-control bg-black text-light border-secondary" [formField]="registerForm.apellido">
             </div>
 
             <div class="mb-3">
               <label class="form-label">Correo electrónico</label>
-              <input type="email" class="form-control bg-black text-light border-secondary">
+              <input type="email" class="form-control bg-black text-light border-secondary" [formField]="registerForm.email">
             </div>
 
             <div class="mb-3">
               <label class="form-label">Nombre de usuario</label>
               <div class="input-group">
                 <span class="input-group-text bg-black text-secondary border-secondary">@</span>
-                <input type="text" class="form-control bg-black text-light border-secondary">
+                <input type="text" class="form-control bg-black text-light border-secondary" [formField]="registerForm.username">
               </div>
             </div>
 
             <div class="mb-3">
               <label class="form-label">Contraseña</label>
-              <input type="password" class="form-control bg-black text-light border-secondary">
+              <input type="password" class="form-control bg-black text-light border-secondary" [formField]="registerForm.password">
             </div>
 
             <div class="mb-3">
               <label class="form-label">Repetir contraseña</label>
-              <input type="password" class="form-control bg-black text-light border-secondary">
+              <input type="password" class="form-control bg-black text-light border-secondary" [formField]="registerForm.repetirPassword">
             </div>
 
             <div class="mb-3">
               <label class="form-label">Fecha de nacimiento</label>
-              <input type="date" class="form-control bg-black text-light border-secondary">
+              <input type="date" class="form-control bg-black text-light border-secondary" [formField]="registerForm.fecha_nacimiento">
             </div>
 
             <div class="mb-3">
               <label class="form-label">Biografía</label>
               <textarea
                 rows="4"
-                maxlength="160"
                 class="form-control bg-black text-light border-secondary"
-                placeholder="Contanos algo sobre vos...">
+                placeholder="Contanos algo sobre vos..."
+                [formField]="registerForm.biografia">
               </textarea>
             </div>
 
@@ -65,7 +65,7 @@
                 class="form-control bg-black text-light border-secondary">
             </div>
 
-            <button class="btn btn-primary w-100 rounded-pill">
+            <button class="btn btn-primary w-100 rounded-pill" (click)="submit()">
               Registrarse
             </button>
 
