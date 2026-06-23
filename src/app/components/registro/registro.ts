@@ -18,6 +18,9 @@ export class Registro {
   loading = signal(false);
   submitted = signal(false);
 
+  fotoSeleccionada: File | null = null;
+  previewUrl = signal<string | null>(null);
+
   registerModel = signal({
     nombre: '',
     apellido: '',
@@ -27,7 +30,7 @@ export class Registro {
     repetirPassword: '',
     fecha_nacimiento: '',
     biografia: '',
-    perfil: 'usuario'
+    perfil: 'usuario',
   })
 
   registerForm = form(this.registerModel, (path) => {
@@ -59,15 +62,47 @@ export class Registro {
 
     this.loading.set(true);
 
-    try {
-      await firstValueFrom(this.http.post('http://localhost:3000/autenticacion/registro', this.registerModel()));
+    const formData = new FormData();
+
+    formData.append('nombre', this.registerModel().nombre);
+    formData.append('apellido', this.registerModel().apellido);
+    formData.append('username', this.registerModel().username);
+    formData.append('email', this.registerModel().email);
+    formData.append('password', this.registerModel().password);
+    formData.append('fecha_nacimiento', this.registerModel().fecha_nacimiento);
+    formData.append('biografia', this.registerModel().biografia);
+    formData.append('perfil', this.registerModel().perfil);
+
+    if(this.fotoSeleccionada) {
+      formData.append('foto_perfil', this.fotoSeleccionada);
+    }
+
+    try{
+      await firstValueFrom(
+        this.http.post('http://localhost:3000/autenticacion/registro', formData)
+      );
 
       this.router.navigate(['/login']);
     } catch(error) {
-      console.error(error);
+      console.error(error)
     } finally {
       this.loading.set(false);
     }
+  }
 
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+
+    if (input.files?.length) {
+      this.fotoSeleccionada = input.files[0];
+
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        this.previewUrl.set(reader.result as string);
+      }
+
+      reader.readAsDataURL(this.fotoSeleccionada);
+    }
   }
 }

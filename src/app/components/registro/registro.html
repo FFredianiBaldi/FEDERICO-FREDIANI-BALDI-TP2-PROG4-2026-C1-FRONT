@@ -9,64 +9,212 @@
 
           <form class="text-light">
 
-            <div class="mb-3">
-              <label class="form-label">Nombre</label>
-              <input type="text" class="form-control bg-black text-light border-secondary" [formField]="registerForm.nombre">
-            </div>
+            <fieldset [disabled]="loading()">
 
-            <div class="mb-3">
-              <label class="form-label">Apellido</label>
-              <input type="text" class="form-control bg-black text-light border-secondary" [formField]="registerForm.apellido">
-            </div>
+              <div class="mb-3">
+                <label class="form-label">Nombre</label>
 
-            <div class="mb-3">
-              <label class="form-label">Correo electrónico</label>
-              <input type="email" class="form-control bg-black text-light border-secondary" [formField]="registerForm.email">
-            </div>
+                <input
+                  type="text"
+                  class="form-control bg-black text-light border-secondary"
+                  [formField]="registerForm.nombre">
 
-            <div class="mb-3">
-              <label class="form-label">Nombre de usuario</label>
-              <div class="input-group">
-                <span class="input-group-text bg-black text-secondary border-secondary">@</span>
-                <input type="text" class="form-control bg-black text-light border-secondary" [formField]="registerForm.username">
+                @if (submitted() && registerForm.nombre().invalid()) {
+                  <div class="text-danger small mt-1">
+                    El nombre es obligatorio
+                  </div>
+                }
               </div>
-            </div>
 
-            <div class="mb-3">
-              <label class="form-label">Contraseña</label>
-              <input type="password" class="form-control bg-black text-light border-secondary" [formField]="registerForm.password">
-            </div>
+              <div class="mb-3">
+                <label class="form-label">Apellido</label>
 
-            <div class="mb-3">
-              <label class="form-label">Repetir contraseña</label>
-              <input type="password" class="form-control bg-black text-light border-secondary" [formField]="registerForm.repetirPassword">
-            </div>
+                <input
+                  type="text"
+                  class="form-control bg-black text-light border-secondary"
+                  [formField]="registerForm.apellido">
 
-            <div class="mb-3">
-              <label class="form-label">Fecha de nacimiento</label>
-              <input type="date" class="form-control bg-black text-light border-secondary" [formField]="registerForm.fecha_nacimiento">
-            </div>
+                @if (submitted() && registerForm.apellido().invalid()) {
+                  <div class="text-danger small mt-1">
+                    El apellido es obligatorio
+                  </div>
+                }
+              </div>
 
-            <div class="mb-3">
-              <label class="form-label">Biografía</label>
-              <textarea
-                rows="4"
-                class="form-control bg-black text-light border-secondary"
-                placeholder="Contanos algo sobre vos..."
-                [formField]="registerForm.biografia">
-              </textarea>
-            </div>
+              <div class="mb-3">
+                <label class="form-label">Correo electronico</label>
 
-            <div class="mb-4">
-              <label class="form-label">Foto de perfil</label>
-              <input
-                type="file"
-                accept="image/*"
-                class="form-control bg-black text-light border-secondary">
-            </div>
+                <input
+                  type="email"
+                  class="form-control bg-black text-light border-secondary"
+                  [formField]="registerForm.email">
 
-            <button class="btn btn-primary w-100 rounded-pill" (click)="submit()">
-              Registrarse
+                @if (submitted() && registerForm.email().invalid()) {
+                  <div class="text-danger small mt-1">
+                    Ingresá un correo electrónico válido
+                  </div>
+                }
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Nombre de usuario</label>
+
+                <div class="input-group">
+                  <span class="input-group-text bg-black text-secondary border-secondary">
+                    @
+                  </span>
+
+                  <input
+                    type="text"
+                    class="form-control bg-black text-light border-secondary"
+                    [formField]="registerForm.username">
+                </div>
+
+                @if (submitted() && registerForm.username().invalid()) {
+                  <div class="text-danger small mt-1">
+                    El nombre de usuario es obligatorio
+                  </div>
+                }
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Contraseña</label>
+
+                <input
+                  type="password"
+                  class="form-control bg-black text-light border-secondary"
+                  [formField]="registerForm.password">
+
+                @if (submitted() && registerForm.password().invalid()) {
+                  <div class="text-danger small mt-1">
+
+                    @if (registerForm.password().errors().some(e => e.kind === 'required')) {
+                      <div>La contraseña es obligatoria</div>
+                    }
+
+                    @if (registerForm.password().errors().some(e => e.kind === 'minLength')) {
+                      <div>Debe tener al menos 8 caracteres</div>
+                    }
+
+                    @if (registerForm.password().errors().some(e => e.kind === 'pattern')) {
+                      <div>Debe contener una mayúscula y un número</div>
+                    }
+
+                  </div>
+                }
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Repetir contraseña</label>
+
+                <input
+                  type="password"
+                  class="form-control bg-black text-light border-secondary"
+                  [formField]="registerForm.repetirPassword">
+
+                @if (
+                  submitted() &&
+                  registerModel().password !== registerModel().repetirPassword
+                ) {
+                  <div class="text-danger small mt-1">
+                    Las contraseñas no coinciden
+                  </div>
+                }
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Fecha de nacimiento</label>
+
+                <input
+                  type="date"
+                  class="form-control bg-black text-light border-secondary"
+                  [formField]="registerForm.fecha_nacimiento">
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Biografia</label>
+
+                <textarea
+                  rows="4"
+                  class="form-control bg-black text-light border-secondary"
+                  [formField]="registerForm.biografia">
+                </textarea>
+
+                @if (submitted() && registerForm.biografia().invalid()) {
+                  <div class="text-danger small mt-1">
+                    La biografía no puede superar los 160 caracteres
+                  </div>
+                }
+              </div>
+
+              <div class="mb-4">
+
+                <label class="form-label">Foto de perfil</label>
+
+                <label class="upload-area w-100">
+
+                  <input
+                    type="file"
+                    accept="image/*"
+                    hidden
+                    (change)="onFileSelected($event)">
+
+                  <div class="upload-content">
+
+                    @if (!fotoSeleccionada) {
+
+                      <i class="bi bi-cloud-arrow-up fs-1"></i>
+
+                      <p class="mb-1 mt-2">
+                        Hacé click para subir una imagen
+                      </p>
+
+                      <small class="text-secondary">
+                        PNG, JPG o WEBP
+                      </small>
+
+                    } @else {
+
+                      <i class="bi bi-image fs-1"></i>
+
+                      <p class="mb-0 mt-2">
+                        {{ fotoSeleccionada.name }}
+                      </p>
+
+                    }
+
+                  </div>
+
+                </label>
+
+                @if (previewUrl()) {
+                  <div class="text-center mt-3">
+                    <img
+                      [src]="previewUrl()"
+                      class="rounded-circle border border-secondary"
+                      width="120"
+                      height="120"
+                      style="object-fit: cover;">
+                  </div>
+                }
+
+              </div>
+
+            </fieldset>
+
+            <button
+              type="button"
+              class="btn btn-primary w-100 rounded-pill"
+              [disabled]="loading()"
+              (click)="submit()">
+
+              @if (loading()) {
+                <span class="spinner-border spinner-border-sm me-2"></span>
+                Registrando...
+              } @else {
+                Registrarse
+              }
+
             </button>
 
           </form>
