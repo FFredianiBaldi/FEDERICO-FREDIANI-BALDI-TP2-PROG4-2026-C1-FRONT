@@ -79,7 +79,7 @@ export class Registro {
 
     try{
       await firstValueFrom(
-        this.http.post('http://localhost:3000/autenticacion/registro', formData)
+        this.http.post('https://nuvia-back.vercel.app/autenticacion/registro', formData)
       );
 
       this.router.navigate(['/login']);
