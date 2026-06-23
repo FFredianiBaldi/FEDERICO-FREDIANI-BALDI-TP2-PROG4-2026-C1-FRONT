@@ -1,0 +1,83 @@
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+
+      <div class="card bg-dark border-secondary shadow-lg">
+        <div class="card-body p-4">
+
+          <h2 class="text-center mb-4 text-light">
+            Iniciar sesión
+          </h2>
+
+          <form class="text-light">
+
+            <fieldset [disabled]="loading()">
+
+
+              <div class="mb-3">
+                <label class="form-label">Email o nombre de usuario</label>
+
+                <input
+                  type="text"
+                  class="form-control bg-black text-light border-secondary"
+                  [formField]="loginForm.identificador">
+
+                @if (submitted() && loginForm.identificador().invalid()) {
+                  <div class="text-danger small mt-1">
+                    Ingresá tu email o nombre de usuario
+                  </div>
+                }
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Contraseña</label>
+
+                <input
+                  type="password"
+                  class="form-control bg-black text-light border-secondary"
+                  [formField]="loginForm.password">
+
+                @if (submitted() && loginForm.password().invalid()) {
+                  <div class="text-danger small mt-1">
+
+                    @if (loginForm.password().errors().some(e => e.kind === 'required')) {
+                      <div>La contraseña es obligatoria</div>
+                    }
+
+                    @if (loginForm.password().errors().some(e => e.kind === 'minLength')) {
+                      <div>Mínimo 8 caracteres</div>
+                    }
+
+                    @if (loginForm.password().errors().some(e => e.kind === 'pattern')) {
+                      <div>Debe contener una mayúscula y un número</div>
+                    }
+
+                  </div>
+                }
+              </div>
+
+            </fieldset>
+
+            <button
+              type="button"
+              class="btn btn-primary w-100 rounded-pill"
+              [disabled]="loading()"
+              (click)="submit()">
+
+              @if (loading()) {
+                <span class="spinner-border spinner-border-sm me-2"></span>
+                Iniciando sesión...
+              } @else {
+                Iniciar sesión
+              }
+
+            </button>
+
+          </form>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
