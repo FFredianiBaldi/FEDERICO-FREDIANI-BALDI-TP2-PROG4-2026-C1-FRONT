@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { form, FormField, minLength, pattern, required } from '@angular/forms/signals';
 import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
+import { AuthService } from '../../services/auth-service';
 
 @Component({
   selector: 'app-login',
@@ -14,6 +15,8 @@ import { firstValueFrom } from 'rxjs';
 export class Login {
   private http = inject(HttpClient);
   private router = inject(Router);
+
+  private authService = inject(AuthService);
 
   loading = signal(false);
   submitted = signal(false);
@@ -47,7 +50,7 @@ export class Login {
 
       const usuario: any = await firstValueFrom(this.http.post('http://localhost:3000/autenticacion/login', payload));
 
-      localStorage.setItem('usuario', JSON.stringify(usuario));
+      this.authService.setUsuario(usuario);
 
       this.router.navigate(['/']);
     } catch(error) {

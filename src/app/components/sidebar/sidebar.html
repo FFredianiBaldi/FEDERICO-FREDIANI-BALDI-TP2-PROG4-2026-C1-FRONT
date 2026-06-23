@@ -1,5 +1,6 @@
 <div class="d-flex flex-column h-100 border-end p-3">
-  <div class="text-center mb-5">
+
+  <div class="text-center mb-4">
     <img src="favicon.ico" alt="logo" width="50">
   </div>
 
@@ -7,13 +8,72 @@
     Home
   </a>
 
-  <div class="mt-auto">
-    <a routerLink="/login" class="btn btn-dark rounded-pill text-center mb-2 d-block">
-      Iniciar sesión
-    </a>
+  @if (!auth.usuario()) {
 
-    <a routerLink="/registro" class="btn btn-primary rounded-pill text-center d-block">
-      Registrarse
-    </a>
-  </div>
+    <div class="mt-auto">
+
+      <a routerLink="/login"
+         class="btn btn-dark rounded-pill text-center mb-2 d-block">
+        Iniciar sesión
+      </a>
+
+      <a routerLink="/registro"
+         class="btn btn-primary rounded-pill text-center d-block">
+        Registrarse
+      </a>
+
+    </div>
+
+  }
+
+  @if (auth.usuario()) {
+
+    <div class="mt-auto dropup">
+
+      <button class="btn btn-dark w-100 d-flex align-items-center gap-2 dropdown-toggle"
+              data-bs-toggle="dropdown"
+              type="button">
+
+        <img
+          [src]="auth.usuario().foto_perfil || 'favicon.ico'"
+          class="rounded-circle"
+          width="40"
+          height="40"
+          style="object-fit: cover;">
+
+        <div class="text-start">
+          <div class="fw-semibold text-light">
+            {{ auth.usuario().nombre }} {{ auth.usuario().apellido }}
+          </div>
+          <small class="text-secondary">
+            @{{ auth.usuario().username }}
+          </small>
+        </div>
+
+      </button>
+
+      <ul class="dropdown-menu dropdown-menu-dark">
+
+        <li>
+          <a class="dropdown-item"
+             [routerLink]="['/', auth.usuario().username]">
+            Ver perfil
+          </a>
+        </li>
+
+        <li><hr class="dropdown-divider"></li>
+
+        <li>
+          <button class="dropdown-item text-danger"
+                  (click)="auth.logout()">
+            Cerrar sesión
+          </button>
+        </li>
+
+      </ul>
+
+    </div>
+
+  }
+
 </div>
