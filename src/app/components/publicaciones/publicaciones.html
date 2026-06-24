@@ -1,1 +1,179 @@
-<p>publicaciones works!</p>
+<div class="container py-4 publicaciones-container">
+
+  <div class="card bg-dark border-secondary shadow-sm mb-4">
+    <div class="card-body">
+
+      <div class="row g-3 align-items-center">
+
+        <div class="col-md-4">
+
+          <label class="form-label fw-semibold text-light">
+            Filtrar por
+          </label>
+
+          <select
+            class="form-select bg-secondary text-light border-secondary"
+            [(ngModel)]="sortBy"
+            (change)="cargarPublicaciones()">
+
+            <option value="fecha">Fecha</option>
+            <option value="likes">Me gusta</option>
+
+          </select>
+
+        </div>
+
+        <div class="col-md-4">
+
+          <label class="form-label fw-semibold text-light">
+            Orden
+          </label>
+
+          <select
+            class="form-select bg-secondary text-light border-secondary"
+            [(ngModel)]="order"
+            (change)="cargarPublicaciones()">
+
+            <option value="desc">Descendente</option>
+            <option value="asc">Ascendente</option>
+
+          </select>
+
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  @for(publicacion of publicaciones(); track publicacion._id) {
+
+  <div class="card publicacion-card shadow mb-4 position-relative">
+
+
+    @if(puedeEliminar(publicacion)) {
+
+      <div class="position-absolute top-0 end-0 m-2">
+
+        <div class="dropdown">
+
+          <button
+            class="btn btn-sm btn-dark border-0"
+            type="button"
+            data-bs-toggle="dropdown">
+
+            <i class="bi bi-three-dots-vertical">...</i>
+
+          </button>
+
+          <ul class="dropdown-menu dropdown-menu-end">
+
+            <li>
+              <button
+                class="dropdown-item text-danger"
+                (click)="eliminarPublicacion(publicacion._id)">
+                Eliminar publicación
+              </button>
+            </li>
+
+          </ul>
+
+        </div>
+
+      </div>
+
+    }
+
+    <div class="card-body">
+
+      <div class="d-flex justify-content-between align-items-start mb-3 pe-5">
+
+        <div class="d-flex align-items-center">
+
+          <img
+            [src]="publicacion.usuario?.foto_perfil || 'default-avatar.jpg'"
+            class="rounded-circle me-3 foto-perfil"
+            alt="Foto de perfil">
+
+          <div>
+
+            <h6 class="mb-0 fw-bold text-light">
+              {{ publicacion.usuario?.nombre }}
+              {{ publicacion.usuario?.apellido }}
+            </h6>
+
+            <small class="username">
+              @{{ publicacion.usuario?.username }}
+            </small>
+
+          </div>
+
+        </div>
+
+        <small class="fecha-publicacion">
+          {{ formatearFecha(publicacion.createdAt) }}
+        </small>
+
+      </div>
+
+      <h4 class="fw-bold text-light mb-3">
+        {{ publicacion.titulo }}
+      </h4>
+
+      @if(publicacion.contenido) {
+        <p class="contenido-publicacion">
+          {{ publicacion.contenido }}
+        </p>
+      }
+
+      @if(publicacion.imagen) {
+        <img
+          [src]="publicacion.imagen"
+          class="img-fluid rounded imagen-publicacion"
+          alt="Imagen publicación">
+      }
+
+    </div>
+
+    <div class="card-footer publicacion-footer">
+      ...
+    </div>
+
+  </div>
+
+  }
+
+  @if(auth.usuario()) {
+
+    <button
+      type="button"
+      class="btn btn-primary rounded-circle position-fixed shadow-lg d-flex align-items-center justify-content-center"
+      style="
+        width: 64px;
+        height: 64px;
+        bottom: 24px;
+        right: 24px;
+        font-size: 2rem;
+        z-index: 1050;
+      "
+      (click)="mostrarModalPublicacion.set(true)">
+
+      +
+
+    </button>
+
+  }
+
+  @if(mostrarModalPublicacion()) {
+
+    <app-publicacion-form
+      (modalClosed)="mostrarModalPublicacion.set(false)"
+      (publicacionCreada)="
+        mostrarModalPublicacion.set(false);
+        cargarPublicaciones()
+      ">
+    </app-publicacion-form>
+
+  }
+
+</div>
