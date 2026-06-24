@@ -30,7 +30,7 @@ export class Perfil {
     this.loading.set(true);
     this.notFound.set(false);
 
-    this.http.get<any>(`http://localhost:3000/usuarios/username/${username}`)
+    this.http.get<any>(`https://nuvia-back.vercel.app/usuarios/username/${username}`)
       .subscribe({
         next: (usuario) => {
           if(usuario) {
@@ -51,7 +51,7 @@ export class Perfil {
 
   cargarPublicaciones(usuarioId: string) {
     this.http.get<any[]>(
-      `http://localhost:3000/publicaciones?offset=0&limit=3&sortBy=fecha&order=desc`
+      `https://nuvia-back.vercel.app/publicaciones?offset=0&limit=3&sortBy=fecha&order=desc`
     ).subscribe({
       next: (pubs) => {
         const filtradas = pubs.filter(p => p.usuarioId === usuarioId);

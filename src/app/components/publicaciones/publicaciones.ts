@@ -27,7 +27,7 @@ export class Publicaciones {
     const backendSort = this.sortBy === 'likes' ? 'likes' : 'fecha';
 
     this.http.get<any[]>(
-      `http://localhost:3000/publicaciones?offset=0&limit=50&sortBy=${backendSort}&order=${this.order}`
+      `https://nuvia-back.vercel.app/publicaciones?offset=0&limit=50&sortBy=${backendSort}&order=${this.order}`
     ).subscribe({
       next: (publicaciones) => {
         this.publicaciones.set(publicaciones);
@@ -63,7 +63,7 @@ export class Publicaciones {
     if (tieneLike) {
 
       this.http.delete(
-        'http://localhost:3000/publicaciones/like',
+        'https://nuvia-back.vercel.app/publicaciones/like',
         {
           body: {
             usuarioId,
@@ -93,7 +93,7 @@ export class Publicaciones {
     } else {
 
       this.http.post(
-        'http://localhost:3000/publicaciones/like',
+        'https://nuvia-back.vercel.app/publicaciones/like',
         {
           usuarioId,
           id
@@ -132,7 +132,7 @@ export class Publicaciones {
 
     if(!usuarioId) return;
 
-    this.http.delete(`http://localhost:3000/publicaciones/${id}`, {
+    this.http.delete(`https://nuvia-back.vercel.app/publicaciones/${id}`, {
       body: {usuarioId}
     }).subscribe({
       next: () => {

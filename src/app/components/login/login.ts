@@ -48,7 +48,7 @@ export class Login {
         password: this.loginModel().password
       }
 
-      const usuario: any = await firstValueFrom(this.http.post('http://localhost:3000/autenticacion/login', payload));
+      const usuario: any = await firstValueFrom(this.http.post('https://nuvia-back.vercel.app/autenticacion/login', payload));
 
       this.authService.setUsuario(usuario);
 

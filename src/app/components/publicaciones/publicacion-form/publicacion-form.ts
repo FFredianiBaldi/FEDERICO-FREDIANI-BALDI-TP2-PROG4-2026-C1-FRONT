@@ -73,7 +73,7 @@ export class PublicacionForm {
     this.loading = true;
 
     this.http.post(
-      'http://localhost:3000/publicaciones',
+      'https://nuvia-back.vercel.app/publicaciones',
       formData
     ).subscribe({
       next: () => {
