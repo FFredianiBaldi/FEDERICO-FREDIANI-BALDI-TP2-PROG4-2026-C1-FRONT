@@ -135,8 +135,26 @@
 
     </div>
 
-    <div class="card-footer publicacion-footer">
-      ...
+    <div class="card-footer publicacion-footer d-flex justify-content-between align-items-center">
+
+      <span
+        class="d-flex align-items-center gap-2 likes-badge"
+        [class.likes-badge-activo]="publicacion.likes?.includes(auth.usuario()?._id)"
+        role="button"
+        (click)="toggleLike(publicacion)">
+
+        <i
+          class="bi"
+          [class.bi-heart-fill]="publicacion.likes?.includes(auth.usuario()?._id)"
+          [class.bi-heart]="!publicacion.likes?.includes(auth.usuario()?._id)">
+        </i>
+
+        <span class="fw-semibold text-light">
+          {{ publicacion.likes?.length || 0 }}
+        </span>
+
+      </span>
+
     </div>
 
   </div>
