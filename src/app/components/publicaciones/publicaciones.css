@@ -1,0 +1,98 @@
+.publicaciones-container {
+    color: #fff;
+}
+
+.publicaciones-filter {
+    background-color: #1e1e1e;
+    border: 1px solid #343434;
+    border-radius: 14px;
+}
+
+.publicacion-card {
+    background-color: #1e1e1e;
+    border: 1px solid #343434;
+    border-radius: 14px;
+    overflow: hidden;
+    transition: all .2s ease;
+}
+
+.publicacion-card:hover {
+    border-color: #4a4a4a;
+}
+
+.publicacion-footer {
+    background-color: #181818;
+    border-top: 1px solid #343434;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.custom-select {
+    background-color: #2a2a2a;
+    border: 1px solid #444;
+    color: white;
+}
+
+.custom-select:focus {
+    background-color: #2a2a2a;
+    color: white;
+    border-color: #666;
+    box-shadow: none;
+}
+
+.custom-select option {
+    background-color: #2a2a2a;
+    color: white;
+}
+
+.foto-perfil {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border: 2px solid #3a3a3a;
+}
+
+.username {
+    color: #9ca3af;
+}
+
+.fecha-publicacion {
+    color: #9ca3af;
+    font-size: .85rem;
+}
+
+.contenido-publicacion {
+    color: #e5e5e5;
+    white-space: pre-wrap;
+    line-height: 1.6;
+}
+
+.imagen-publicacion {
+    width: 100%;
+    max-height: 550px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-top: .5rem;
+}
+
+.likes-badge {
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: 1px solid #38bdf8;
+  color: #38bdf8;
+  background: transparent;
+  transition: all .2s ease;
+}
+
+.likes-badge-activo {
+  background: #38bdf8;
+  color: white;
+}
+
+.likes-badge i {
+  transition: 0.2s;
+}
+
+.likes-badge:hover i {
+  transform: scale(1.1);
+}

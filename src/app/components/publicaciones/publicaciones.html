@@ -1,1 +1,145 @@
-<p>publicaciones works!</p>
+<div class="container py-4 publicaciones-container">
+
+  <div class="card bg-dark border-secondary shadow-sm mb-4">
+    <div class="card-body">
+
+      <div class="row g-3 align-items-center">
+
+        <div class="col-md-4">
+
+          <label class="form-label fw-semibold text-light">
+            Filtrar por
+          </label>
+
+          <select
+            class="form-select bg-secondary text-light border-secondary"
+            [(ngModel)]="sortBy"
+            (change)="cargarPublicaciones()">
+
+            <option value="fecha">
+              Fecha
+            </option>
+
+            <option value="likes">
+              Me gusta
+            </option>
+
+          </select>
+
+        </div>
+
+        <div class="col-md-4">
+
+          <label class="form-label fw-semibold text-light">
+            Orden
+          </label>
+
+          <select
+            class="form-select bg-secondary text-light border-secondary"
+            [(ngModel)]="order"
+            (change)="cargarPublicaciones()">
+
+            <option value="desc">
+              Descendente
+            </option>
+
+            <option value="asc">
+              Ascendente
+            </option>
+
+          </select>
+
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  @for(publicacion of publicaciones(); track publicacion._id) {
+
+  <div class="card publicacion-card shadow mb-4">
+
+    <div class="card-body">
+
+      <div class="d-flex justify-content-between align-items-start mb-3">
+
+        <div class="d-flex align-items-center">
+
+          <img
+            [src]="publicacion.usuario?.foto_perfil || 'default-avatar.jpg'"
+            class="rounded-circle me-3 foto-perfil"
+            alt="Foto de perfil">
+
+          <div>
+
+            <h6 class="mb-0 fw-bold text-light">
+              {{ publicacion.usuario?.nombre }}
+              {{ publicacion.usuario?.apellido }}
+            </h6>
+
+            <small class="username">
+              @{{ publicacion.usuario?.username }}
+            </small>
+
+          </div>
+
+        </div>
+
+        <small class="fecha-publicacion">
+          {{ formatearFecha(publicacion.createdAt) }}
+        </small>
+
+      </div>
+
+      <h4 class="fw-bold text-light mb-3">
+        {{ publicacion.titulo }}
+      </h4>
+
+      @if(publicacion.contenido) {
+        <p class="contenido-publicacion">
+          {{ publicacion.contenido }}
+        </p>
+      }
+
+      @if(publicacion.imagen) {
+
+        <img
+          [src]="publicacion.imagen"
+          class="img-fluid rounded imagen-publicacion"
+          alt="Imagen publicación">
+
+      }
+
+    </div>
+
+    <div class="card-footer publicacion-footer">
+      <span
+        class="likes-badge d-inline-flex align-items-center gap-2"
+        [class.likes-badge-activo]="publicacion.likes?.includes(auth.usuario()?._id)"
+        role="button"
+        (click)="toggleLike(publicacion)">
+
+        <span class="fw-semibold">
+          Likes:
+        </span>
+
+        <i
+          class="bi"
+          [class.bi-heart-fill]="publicacion.likes?.includes(auth.usuario()?._id)"
+          [class.bi-heart]="!publicacion.likes?.includes(auth.usuario()?._id)">
+        </i>
+
+        <span class="fw-bold">
+          {{ publicacion.likes?.length || 0 }}
+        </span>
+
+      </span>
+
+    </div>
+
+  </div>
+
+  }
+
+</div>
