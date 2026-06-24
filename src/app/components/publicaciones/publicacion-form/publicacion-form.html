@@ -1,0 +1,133 @@
+<div class="modal d-block" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content bg-dark text-light border-secondary">
+
+      <div class="modal-header border-secondary">
+
+        <h5 class="modal-title">
+          Nueva publicación
+        </h5>
+
+        <button
+          type="button"
+          class="btn-close btn-close-white"
+          (click)="cerrar()">
+        </button>
+
+      </div>
+
+      <div class="modal-body">
+
+        <div class="mb-3">
+
+          <label class="form-label">
+            Título
+          </label>
+
+          <input
+            type="text"
+            class="form-control bg-black text-light border-secondary"
+            [(ngModel)]="titulo">
+
+        </div>
+
+        <div class="mb-3">
+
+          <label class="form-label">
+            Contenido
+          </label>
+
+          <textarea
+            rows="4"
+            class="form-control bg-black text-light border-secondary"
+            [(ngModel)]="contenido">
+          </textarea>
+
+        </div>
+
+        <div class="mb-3">
+
+          <label class="form-label">
+            Imagen
+          </label>
+
+          <label class="upload-area w-100">
+
+            <input
+              type="file"
+              accept="image/*"
+              hidden
+              (change)="onFileSelected($event)">
+
+            <div class="upload-content text-center py-4">
+
+              @if (!imagenSeleccionada) {
+
+                <i class="bi bi-cloud-arrow-up fs-1"></i>
+
+                <p class="mb-1 mt-2">
+                  Hacé click para subir una imagen
+                </p>
+
+                <small class="text-secondary">
+                  PNG, JPG o WEBP
+                </small>
+
+              } @else {
+
+                <i class="bi bi-image fs-1"></i>
+
+                <p class="mb-0 mt-2">
+                  {{ imagenSeleccionada.name }}
+                </p>
+
+              }
+
+            </div>
+
+          </label>
+
+          @if (previewUrl) {
+
+            <div class="text-center mt-3">
+
+              <img
+                [src]="previewUrl"
+                class="img-fluid rounded border border-secondary"
+                style="max-height: 250px">
+
+            </div>
+
+          }
+
+        </div>
+
+      </div>
+
+      <div class="modal-footer border-secondary">
+
+        <button
+          class="btn btn-secondary"
+          (click)="cerrar()">
+          Cancelar
+        </button>
+
+        <button
+          class="btn btn-primary"
+          [disabled]="loading"
+          (click)="crearPublicacion()">
+
+          @if (loading) {
+            <span class="spinner-border spinner-border-sm me-2"></span>
+            Publicando...
+          } @else {
+            Publicar
+          }
+
+        </button>
+
+      </div>
+
+    </div>
+  </div>
+</div>

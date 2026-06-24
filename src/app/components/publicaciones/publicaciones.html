@@ -16,13 +16,8 @@
             [(ngModel)]="sortBy"
             (change)="cargarPublicaciones()">
 
-            <option value="fecha">
-              Fecha
-            </option>
-
-            <option value="likes">
-              Me gusta
-            </option>
+            <option value="fecha">Fecha</option>
+            <option value="likes">Me gusta</option>
 
           </select>
 
@@ -39,13 +34,8 @@
             [(ngModel)]="order"
             (change)="cargarPublicaciones()">
 
-            <option value="desc">
-              Descendente
-            </option>
-
-            <option value="asc">
-              Ascendente
-            </option>
+            <option value="desc">Descendente</option>
+            <option value="asc">Ascendente</option>
 
           </select>
 
@@ -58,11 +48,46 @@
 
   @for(publicacion of publicaciones(); track publicacion._id) {
 
-  <div class="card publicacion-card shadow mb-4">
+  <div class="card publicacion-card shadow mb-4 position-relative">
+
+
+    @if(puedeEliminar(publicacion)) {
+
+      <div class="position-absolute top-0 end-0 m-2">
+
+        <div class="dropdown">
+
+          <button
+            class="btn btn-sm btn-dark border-0"
+            type="button"
+            data-bs-toggle="dropdown">
+
+            <i class="bi bi-three-dots-vertical">...</i>
+
+          </button>
+
+          <ul class="dropdown-menu dropdown-menu-end">
+
+            <li>
+              <button
+                class="dropdown-item text-danger"
+                (click)="eliminarPublicacion(publicacion._id)">
+                Eliminar publicación
+              </button>
+            </li>
+
+          </ul>
+
+        </div>
+
+      </div>
+
+    }
 
     <div class="card-body">
 
-      <div class="d-flex justify-content-between align-items-start mb-3">
+      <!-- HEADER REORGANIZADO -->
+      <div class="d-flex justify-content-between align-items-start mb-3 pe-5">
 
         <div class="d-flex align-items-center">
 
@@ -86,7 +111,8 @@
 
         </div>
 
-        <small class="fecha-publicacion">
+        <!-- FECHA MÁS A LA IZQUIERDA -->
+        <small class="fecha-publicacion me-4">
           {{ formatearFecha(publicacion.createdAt) }}
         </small>
 
@@ -103,42 +129,52 @@
       }
 
       @if(publicacion.imagen) {
-
         <img
           [src]="publicacion.imagen"
           class="img-fluid rounded imagen-publicacion"
           alt="Imagen publicación">
-
       }
 
     </div>
 
     <div class="card-footer publicacion-footer">
-      <span
-        class="likes-badge d-inline-flex align-items-center gap-2"
-        [class.likes-badge-activo]="publicacion.likes?.includes(auth.usuario()?._id)"
-        role="button"
-        (click)="toggleLike(publicacion)">
-
-        <span class="fw-semibold">
-          Likes:
-        </span>
-
-        <i
-          class="bi"
-          [class.bi-heart-fill]="publicacion.likes?.includes(auth.usuario()?._id)"
-          [class.bi-heart]="!publicacion.likes?.includes(auth.usuario()?._id)">
-        </i>
-
-        <span class="fw-bold">
-          {{ publicacion.likes?.length || 0 }}
-        </span>
-
-      </span>
-
+      ...
     </div>
 
   </div>
+
+  }
+
+  @if(auth.usuario()) {
+
+    <button
+      type="button"
+      class="btn btn-primary rounded-circle position-fixed shadow-lg d-flex align-items-center justify-content-center"
+      style="
+        width: 64px;
+        height: 64px;
+        bottom: 24px;
+        right: 24px;
+        font-size: 2rem;
+        z-index: 1050;
+      "
+      (click)="mostrarModalPublicacion.set(true)">
+
+      +
+
+    </button>
+
+  }
+
+  @if(mostrarModalPublicacion()) {
+
+    <app-publicacion-form
+      (modalClosed)="mostrarModalPublicacion.set(false)"
+      (publicacionCreada)="
+        mostrarModalPublicacion.set(false);
+        cargarPublicaciones()
+      ">
+    </app-publicacion-form>
 
   }
 

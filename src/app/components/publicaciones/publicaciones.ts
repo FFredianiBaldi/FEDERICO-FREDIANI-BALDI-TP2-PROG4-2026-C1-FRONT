@@ -1,16 +1,20 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth-service';
+import { Router } from '@angular/router';
+import { PublicacionForm } from './publicacion-form/publicacion-form';
 
 @Component({
   selector: 'app-publicaciones',
-  imports: [FormsModule],
+  imports: [FormsModule, PublicacionForm],
   templateUrl: './publicaciones.html',
   styleUrl: './publicaciones.css',
 })
 export class Publicaciones {
+  private router = inject(Router);
   publicaciones = signal<any[]>([]);
+  mostrarModalPublicacion = signal<boolean>(false);
 
   sortBy = 'fecha';
   order = 'desc';
@@ -45,7 +49,13 @@ export class Publicaciones {
   }
 
   toggleLike(publicacion: any) {
-    const usuarioId = this.auth.usuario()._id;
+    const usuarioId = this.auth.usuario()?._id;
+
+    if(!usuarioId) {
+      this.router.navigate(['/registro'])
+      return;
+    }
+
     const id = publicacion._id;
 
     const tieneLike = publicacion.likes?.includes(usuarioId);
@@ -107,5 +117,30 @@ export class Publicaciones {
       });
 
     }
+  }
+
+  puedeEliminar(publicacion: any): boolean {
+    const usuario = this.auth.usuario();
+
+    if(!usuario) return false;
+
+    return (usuario._id === publicacion.usuarioId || usuario.perfil === 'administrador');
+  }
+
+  eliminarPublicacion(id: string) {
+    const usuarioId = this.auth.usuario()._id;
+
+    if(!usuarioId) return;
+
+    this.http.delete(`http://localhost:3000/publicaciones/${id}`, {
+      body: {usuarioId}
+    }).subscribe({
+      next: () => {
+        this.publicaciones.update(publicaciones =>
+          publicaciones.filter(p => p._id !== id)
+        );
+      },
+      error: (err) => console.error(err)
+    })
   }
 }
