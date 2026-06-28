@@ -19,7 +19,7 @@
                   class="form-control bg-black text-light border-secondary"
                   [formField]="registerForm.nombre">
 
-                @if (submitted() && registerForm.nombre().invalid()) {
+                @if (registerForm.nombre().invalid() && registerForm.nombre().touched()) {
                   <div class="text-danger small mt-1">
                     El nombre es obligatorio
                   </div>
@@ -34,7 +34,7 @@
                   class="form-control bg-black text-light border-secondary"
                   [formField]="registerForm.apellido">
 
-                @if (submitted() && registerForm.apellido().invalid()) {
+                @if (registerForm.apellido().invalid() && registerForm.apellido().touched()) {
                   <div class="text-danger small mt-1">
                     El apellido es obligatorio
                   </div>
@@ -49,7 +49,7 @@
                   class="form-control bg-black text-light border-secondary"
                   [formField]="registerForm.email">
 
-                @if (submitted() && registerForm.email().invalid()) {
+                @if (registerForm.email().invalid() && registerForm.email().touched()) {
                   <div class="text-danger small mt-1">
                     Ingresá un correo electrónico válido
                   </div>
@@ -70,7 +70,7 @@
                     [formField]="registerForm.username">
                 </div>
 
-                @if (submitted() && registerForm.username().invalid()) {
+                @if (registerForm.username().invalid() && registerForm.username().touched()) {
                   <div class="text-danger small mt-1">
                     El nombre de usuario es obligatorio
                   </div>
@@ -85,7 +85,7 @@
                   class="form-control bg-black text-light border-secondary"
                   [formField]="registerForm.password">
 
-                @if (submitted() && registerForm.password().invalid()) {
+                @if (registerForm.password().invalid() && registerForm.password().touched()) {
                   <div class="text-danger small mt-1">
 
                     @if (registerForm.password().errors().some(e => e.kind === 'required')) {
@@ -112,10 +112,7 @@
                   class="form-control bg-black text-light border-secondary"
                   [formField]="registerForm.repetirPassword">
 
-                @if (
-                  submitted() &&
-                  registerModel().password !== registerModel().repetirPassword
-                ) {
+                @if (registerForm.repetirPassword().touched() && registerModel().password !== registerModel().repetirPassword) {
                   <div class="text-danger small mt-1">
                     Las contraseñas no coinciden
                   </div>
@@ -140,7 +137,7 @@
                   [formField]="registerForm.biografia">
                 </textarea>
 
-                @if (submitted() && registerForm.biografia().invalid()) {
+                @if (registerForm.biografia().invalid() && registerForm.biografia().touched()) {
                   <div class="text-danger small mt-1">
                     La biografía no puede superar los 160 caracteres
                   </div>

@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { email, form, FormField, maxLength, minLength, pattern, required } from '@angular/forms/signals';
 import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
+import { AuthService } from '../../services/auth-service';
 
 @Component({
   selector: 'app-registro',
@@ -12,6 +13,8 @@ import { firstValueFrom } from 'rxjs';
   styleUrl: './registro.css',
 })
 export class Registro {
+  private authService = inject(AuthService)
+
   private http = inject(HttpClient);
   private router = inject(Router);
 
@@ -82,7 +85,16 @@ export class Registro {
         this.http.post('https://nuvia-back.vercel.app/autenticacion/registro', formData)
       );
 
-      this.router.navigate(['/login']);
+      const payload = {
+        identificador: this.registerModel().email,
+        password: this.registerModel().password
+      }
+
+      const usuario: any = await firstValueFrom(this.http.post('https://nuvia-back.vercel.app/autenticacion/login', payload));
+
+      this.authService.setUsuario(usuario);
+
+      this.router.navigate(['/']);
     } catch(error) {
       console.error(error)
     } finally {
