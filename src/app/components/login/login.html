@@ -22,7 +22,7 @@
                   class="form-control bg-black text-light border-secondary"
                   [formField]="loginForm.identificador">
 
-                @if (submitted() && loginForm.identificador().invalid()) {
+                @if (loginForm.identificador().invalid() && loginForm.identificador().touched()) {
                   <div class="text-danger small mt-1">
                     Ingresá tu email o nombre de usuario
                   </div>
@@ -37,7 +37,7 @@
                   class="form-control bg-black text-light border-secondary"
                   [formField]="loginForm.password">
 
-                @if (submitted() && loginForm.password().invalid()) {
+                @if (loginForm.password().invalid() && loginForm.password().touched()) {
                   <div class="text-danger small mt-1">
 
                     @if (loginForm.password().errors().some(e => e.kind === 'required')) {
@@ -81,3 +81,5 @@
     </div>
   </div>
 </div>
+
+<app-error-modal #errorModal></app-error-modal>

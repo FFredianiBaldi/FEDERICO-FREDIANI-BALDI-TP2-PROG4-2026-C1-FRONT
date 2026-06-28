@@ -1,17 +1,23 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { email, form, FormField, maxLength, minLength, pattern, required } from '@angular/forms/signals';
+import { email, form, FormField, maxLength, minLength, pattern, required, validate } from '@angular/forms/signals';
 import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
+import { AuthService } from '../../services/auth-service';
+import { ErrorModal } from '../../modals/error-modal/error-modal';
 
 @Component({
   selector: 'app-registro',
-  imports: [FormField, FormsModule],
+  imports: [FormField, FormsModule, ErrorModal],
   templateUrl: './registro.html',
   styleUrl: './registro.css',
 })
 export class Registro {
+
+  @ViewChild('errorModal') errorModal!: ErrorModal;
+  private authService = inject(AuthService)
+
   private http = inject(HttpClient);
   private router = inject(Router);
 
@@ -49,6 +55,24 @@ export class Registro {
     required(path.repetirPassword);
 
     maxLength(path.biografia, 160);
+
+    required(path.fecha_nacimiento);
+    validate(path.fecha_nacimiento, ({value}) => {
+      const raw = value();
+
+      if(!raw) return;
+
+      const hoy = new Date();
+      const fecha = new Date(raw);
+
+      if(fecha > hoy) {
+        return {
+          futureDate: true
+        } as any;
+      }
+
+      return;
+    })
   })
 
   async submit() {
@@ -82,9 +106,29 @@ export class Registro {
         this.http.post('https://nuvia-back.vercel.app/autenticacion/registro', formData)
       );
 
-      this.router.navigate(['/login']);
-    } catch(error) {
-      console.error(error)
+      const payload = {
+        identificador: this.registerModel().email,
+        password: this.registerModel().password
+      }
+
+      const usuario: any = await firstValueFrom(this.http.post('https://nuvia-back.vercel.app/autenticacion/login', payload));
+
+      this.authService.setUsuario(usuario);
+
+      this.router.navigate(['/']);
+    } catch(error:any) {
+      const status = error?.status;
+      const message = error?.error?.message || 'Error desconocido';
+
+      if(status === 400){
+        this.errorModal.abrir('400', message);
+      } else if(status === 401){
+        this.errorModal.abrir('401', message);
+      } else if(status === 409){
+        this.errorModal.abrir('409', message);
+      } else {
+        this.errorModal.abrir('500', "Error del servidor");
+      }
     } finally {
       this.loading.set(false);
     }

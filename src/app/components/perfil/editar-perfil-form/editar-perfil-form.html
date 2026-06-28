@@ -1,0 +1,99 @@
+<div class="modal d-block" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content bg-dark text-light border-secondary">
+
+      <div class="modal-header border-secondary">
+        <h5 class="modal-title">Editar perfil</h5>
+
+        <button class="btn-close btn-close-white" (click)="cerrar()"></button>
+      </div>
+
+      <div class="modal-body">
+
+        <div class="text-center mb-4">
+
+          <label class="position-relative d-inline-block" style="cursor:pointer">
+
+            <input
+              type="file"
+              hidden
+              accept="image/*"
+              (change)="onFileSelected($event)">
+
+            <img
+              [src]="previewUrl() || usuario?.foto_perfil || 'default-avatar.jpg'"
+              class="rounded-circle border border-secondary"
+              width="120"
+              height="120"
+              style="object-fit: cover;">
+
+            <div class="position-absolute top-50 start-50 translate-middle text-white bg-dark bg-opacity-50 rounded px-2 py-1"
+                 style="opacity:0; transition:0.2s;">
+              EDITAR
+            </div>
+
+          </label>
+
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Nombre</label>
+          <input class="form-control bg-black text-light border-secondary"
+                 [formField]="form.nombre">
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Apellido</label>
+          <input class="form-control bg-black text-light border-secondary"
+                 [formField]="form.apellido">
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Email</label>
+          <input type="email"
+                 class="form-control bg-black text-light border-secondary"
+                 [formField]="form.email">
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Username</label>
+          <div class="input-group">
+            <span class="input-group-text bg-black text-secondary border-secondary">@</span>
+            <input class="form-control bg-black text-light border-secondary"
+                   [formField]="form.username">
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Biografía</label>
+          <textarea rows="4"
+                    class="form-control bg-black text-light border-secondary"
+                    [formField]="form.biografia"></textarea>
+        </div>
+
+      </div>
+
+      <div class="modal-footer border-secondary">
+
+        <button class="btn btn-secondary" (click)="cerrar()">
+          Cancelar
+        </button>
+
+        <button class="btn btn-primary"
+                [disabled]="loading()"
+                (click)="submit()">
+
+          @if (loading()) {
+            <span class="spinner-border spinner-border-sm me-2"></span>
+            Guardando...
+          } @else {
+            Enviar
+          }
+
+        </button>
+
+      </div>
+
+    </div>
+  </div>
+</div>

@@ -1,18 +1,21 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { form, FormField, minLength, pattern, required } from '@angular/forms/signals';
 import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { AuthService } from '../../services/auth-service';
+import { ErrorModal } from '../../modals/error-modal/error-modal';
 
 @Component({
   selector: 'app-login',
-  imports: [FormField, FormsModule],
+  imports: [FormField, FormsModule, ErrorModal],
   templateUrl: './login.html',
   styleUrl: './login.css',
 })
 export class Login {
+@ViewChild('errorModal') errorModal!: ErrorModal;
+
   private http = inject(HttpClient);
   private router = inject(Router);
 
@@ -53,8 +56,17 @@ export class Login {
       this.authService.setUsuario(usuario);
 
       this.router.navigate(['/']);
-    } catch(error) {
-      console.error(error);
+    } catch(error:any) {
+      const status = error?.status;
+      const message = error?.error?.message || 'Error desconocido';
+
+      if(status === 400) {
+        this.errorModal.abrir('400', message);
+      } else if(status === 401) {
+        this.errorModal.abrir('401', message);
+      } else {
+        this.errorModal.abrir('500', 'Error del servidor')
+      }
     } finally {
       this.loading.set(false);
     }

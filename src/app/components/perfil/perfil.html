@@ -29,6 +29,14 @@
           {{ usuario().nombre }} {{ usuario().apellido }}
         </h3>
 
+        @if(esMiPerfil()) {
+          <button
+            class="btn btn-outline-light mt-3"
+            (click)="mostrarEditar.set(true)">
+            Editar perfil
+          </button>
+        }
+
         <p class="text-secondary">
           @{{ usuario().username }}
         </p>
@@ -93,3 +101,10 @@
   }
 
 </div>
+
+@if(mostrarEditar()) {
+  <app-editar-perfil-form
+    (modalClosed)="mostrarEditar.set(false)"
+    (actualizado)="onPerfilActualizado($event)">
+  </app-editar-perfil-form>
+}

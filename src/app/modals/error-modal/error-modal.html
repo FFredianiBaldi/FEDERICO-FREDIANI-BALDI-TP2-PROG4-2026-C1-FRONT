@@ -1,0 +1,19 @@
+@if (visible()) {
+  <div class="overlay">
+    <div class="modal-box shadow">
+
+      <h4 class="text-danger mb-3">
+        Error {{ codigo() }}
+      </h4>
+
+      <p class="text-light mb-4">
+        {{ mensaje() }}
+      </p>
+
+      <button class="btn btn-light w-100" (click)="cerrar()">
+        Aceptar
+      </button>
+
+    </div>
+  </div>
+}
