@@ -12,30 +12,62 @@ import { PublicacionForm } from './publicacion-form/publicacion-form';
   styleUrl: './publicaciones.css',
 })
 export class Publicaciones {
+
   private router = inject(Router);
+
   publicaciones = signal<any[]>([]);
   mostrarModalPublicacion = signal<boolean>(false);
 
   sortBy = 'fecha';
   order = 'desc';
 
+  offset = 0;
+  limit = 3;
+  hayMas = signal(true);
+  loading = signal(false);
+
   constructor(private http: HttpClient, public auth: AuthService) {
-    this.cargarPublicaciones();
+    this.cargarPublicaciones(true);
   }
 
-  cargarPublicaciones() {
+  cargarPublicaciones(reset = false) {
+
+    if (this.loading()) return;
+
+    this.loading.set(true);
+
+    if (reset) {
+      this.offset = 0;
+      this.publicaciones.set([]);
+      this.hayMas.set(true);
+    }
+
     const backendSort = this.sortBy === 'likes' ? 'likes' : 'fecha';
 
     this.http.get<any[]>(
-      `https://nuvia-back.vercel.app/publicaciones?offset=0&limit=50&sortBy=${backendSort}&order=${this.order}`
+      `https://nuvia-back.vercel.app/publicaciones?offset=${this.offset}&limit=${this.limit}&sortBy=${backendSort}&order=${this.order}`
     ).subscribe({
       next: (publicaciones) => {
-        this.publicaciones.set(publicaciones);
+
+        if (publicaciones.length < this.limit) {
+          this.hayMas.set(false);
+        }
+
+        this.publicaciones.update(prev => [...prev, ...publicaciones]);
+
+        this.offset += this.limit;
+
+        this.loading.set(false);
       },
       error: (err) => {
         console.error(err);
+        this.loading.set(false);
       }
     });
+  }
+
+  cambiarOrden() {
+    this.cargarPublicaciones(true);
   }
 
   formatearFecha(fecha: string) {
@@ -142,5 +174,10 @@ export class Publicaciones {
       },
       error: (err) => console.error(err)
     })
+  }
+
+  onPublicacionCreada() {
+    this.mostrarModalPublicacion.set(false);
+    this.cargarPublicaciones(true);
   }
 }

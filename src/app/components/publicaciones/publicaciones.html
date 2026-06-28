@@ -14,7 +14,7 @@
           <select
             class="form-select bg-secondary text-light border-secondary"
             [(ngModel)]="sortBy"
-            (change)="cargarPublicaciones()">
+            (change)="cargarPublicaciones(true)">
 
             <option value="fecha">Fecha</option>
             <option value="likes">Me gusta</option>
@@ -32,7 +32,7 @@
           <select
             class="form-select bg-secondary text-light border-secondary"
             [(ngModel)]="order"
-            (change)="cargarPublicaciones()">
+            (change)="cargarPublicaciones(true)">
 
             <option value="desc">Descendente</option>
             <option value="asc">Ascendente</option>
@@ -186,11 +186,39 @@
 
     <app-publicacion-form
       (modalClosed)="mostrarModalPublicacion.set(false)"
-      (publicacionCreada)="
-        mostrarModalPublicacion.set(false);
-        cargarPublicaciones()
-      ">
+      (publicacionCreada)="onPublicacionCreada()">
     </app-publicacion-form>
+
+  }
+
+  @if (publicaciones().length > 0) {
+
+    <div class="text-center my-4">
+
+      @if (hayMas()) {
+
+        <button
+          class="btn btn-outline-light px-4"
+          (click)="cargarPublicaciones()"
+          [disabled]="loading()">
+
+          @if (loading()) {
+            Cargando...
+          } @else {
+            Cargar más
+          }
+
+        </button>
+
+      } @else {
+
+        <p class="text-secondary">
+          Parece que llegaste al final
+        </p>
+
+      }
+
+    </div>
 
   }
 
