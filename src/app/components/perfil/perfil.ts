@@ -2,15 +2,19 @@ import { Component, inject, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
+import { EditarPerfilForm } from './editar-perfil-form/editar-perfil-form';
+import { AuthService } from '../../services/auth-service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-perfil',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, EditarPerfilForm],
   templateUrl: './perfil.html',
 })
 export class Perfil {
 
+  private router = inject(Router);
   private route = inject(ActivatedRoute);
   private http = inject(HttpClient);
 
@@ -19,7 +23,9 @@ export class Perfil {
   loading = signal(true);
   notFound = signal(false);
 
-  constructor() {
+  mostrarEditar = signal(false)
+
+  constructor(public auth: AuthService) {
     this.route.params.subscribe(params => {
       const username = params['username'];
       this.cargarPerfil(username);
@@ -68,5 +74,21 @@ export class Perfil {
     const date = new Date(fecha);
     return `${date.getDate().toString().padStart(2,'0')}-${(date.getMonth()+1)
       .toString().padStart(2,'0')}-${date.getFullYear()}`;
+  }
+
+  esMiPerfil() {
+    const user = this.auth.usuario();
+    const perfil = this.usuario();
+
+    if(!user || !perfil) return false;
+
+    return user.__id === perfil.__id;
+  }
+
+  onPerfilActualizado(newUserName: string) {
+
+    this.mostrarEditar.set(false);
+    this.cargarPerfil(newUserName);
+    this.router.navigate(['perfil', newUserName])
   }
 }
