@@ -82,7 +82,7 @@ export class Perfil {
 
     if(!user || !perfil) return false;
 
-    return user.__id === perfil.__id;
+    return user._id === perfil._id;
   }
 
   onPerfilActualizado(newUserName: string) {
