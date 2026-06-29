@@ -48,7 +48,7 @@
 
   @for(publicacion of publicaciones(); track publicacion._id) {
 
-  <div class="card publicacion-card shadow mb-4 position-relative">
+  <div class="card publicacion-card shadow mb-4 position-relative" role="button" (click)="abrirPublicacion(publicacion)">
 
 
     @if(puedeEliminar(publicacion)) {
@@ -60,18 +60,21 @@
           <button
             class="btn btn-sm btn-dark border-0"
             type="button"
-            data-bs-toggle="dropdown">
+            data-bs-toggle="dropdown"
+            (click)="$event.stopPropagation()"
+            >
 
             <i class="bi bi-three-dots-vertical">...</i>
 
           </button>
 
-          <ul class="dropdown-menu dropdown-menu-end">
+          <ul class="dropdown-menu dropdown-menu-end"
+          (click)="$event.stopPropagation()">
 
             <li>
               <button
                 class="dropdown-item text-danger"
-                (click)="eliminarPublicacion(publicacion._id)">
+                (click)="$event.stopPropagation(); eliminarPublicacion(publicacion._id)">
                 Eliminar publicación
               </button>
             </li>
@@ -223,3 +226,12 @@
   }
 
 </div>
+
+@if(publicacionSeleccionada()) {
+
+  <app-modal-publicacion
+    [publicacion]="publicacionSeleccionada()"
+    (cerrarModal)="publicacionSeleccionada.set(null)">
+  </app-modal-publicacion>
+
+}
