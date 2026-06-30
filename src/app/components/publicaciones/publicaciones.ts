@@ -121,6 +121,15 @@ export class Publicaciones {
             )
           );
 
+          if(this.publicacionSeleccionada()?._id === id) {
+            this.publicacionSeleccionada.update(pub => ({
+              ...pub!,
+              likes: pub!.likes.filter(
+                (likeId:string) => likeId !== usuarioId
+              )
+            }))
+          }
+
         },
         error: (err) => console.error(err)
       });
@@ -146,6 +155,13 @@ export class Publicaciones {
                 : pub
             )
           );
+
+          if(this.publicacionSeleccionada()?._id === id) {
+            this.publicacionSeleccionada.update(pub => ({
+              ...pub!,
+              likes: [...(pub?.likes || []), usuarioId]
+            }))
+          }
 
         },
         error: (err) => console.error(err)

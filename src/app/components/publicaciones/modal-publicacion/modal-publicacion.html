@@ -86,11 +86,69 @@
           {{ formatearFecha(publicacion.createdAt) }}
         </small>
 
-        <span class="text-light">
-          Likes: {{ publicacion.likes?.length || 0 }}
+        <span
+          class="d-flex align-items-center gap-2 likes-badge"
+          [class.likes-badge-activo]="publicacion.likes?.includes(auth.usuario()?._id)"
+          role="button"
+          (click)="toggleLike()">
+
+          <i
+            class="bi"
+            [class.bi-heart-fill]="publicacion.likes?.includes(auth.usuario()?._id)"
+            [class.bi-heart]="!publicacion.likes?.includes(auth.usuario()?._id)">
+          </i>
+
+          <span class="fw-semibold text-light">
+            {{ publicacion.likes?.length || 0 }}
+          </span>
+
         </span>
 
       </div>
+
+      @if(auth.usuario()) {
+
+        <div class="border-top border-secondary p-3">
+
+          <div class="d-flex gap-2">
+
+            <input
+              type="text"
+              class="form-control comentario-input"
+              placeholder="Escribí un comentario..."
+              [ngModel]="comentarioModel().contenido"
+              (ngModelChange)="comentarioModel.update(v => ({ ...v, contenido: $event }))"
+              (keydown)="onKeyDown($event)">
+
+            <label class="imagen-btn">
+
+              <i class="bi bi-image-fill"></i>
+
+              <input
+                hidden
+                type="file"
+                accept="image/*"
+                (change)="onFileSelected($event)">
+
+            </label>
+
+          </div>
+
+          @if(previewImagen()) {
+
+            <div class="mt-3 text-center">
+
+              <img
+                [src]="previewImagen()"
+                class="preview-comentario">
+
+            </div>
+
+          }
+
+        </div>
+
+      }
 
     </div>
 
