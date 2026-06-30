@@ -140,9 +140,184 @@
 
               <img
                 [src]="previewImagen()"
-                class="preview-comentario">
+                class="preview-comentario"
+                style="
+                height: 220px;
+                width: auto;
+                max-width: 100%;
+                object-fit: contain;
+                border: 1px solid #444;
+                ">
 
             </div>
+
+          }
+
+        </div>
+
+      }
+
+
+      <div class="px-3 pb-3">
+        <hr class="border-secondary my-4">
+
+        <h5 class="mb-3">
+          Comentarios
+        </h5>
+      </div>
+
+
+      @for(comentario of comentarios(); track comentario._id) {
+
+        <div class="card bg-black border-secondary mb-3 position-relative">
+
+          <div class="card-body">
+
+            @if(puedeEliminarComentario(comentario)) {
+
+              <div class="position-absolute top-0 end-0 m-2">
+
+                <div class="dropdown">
+
+                  <button
+                    class="btn btn-sm btn-dark border-0"
+                    type="button"
+                    data-bs-toggle="dropdown"
+                    (click)="$event.stopPropagation()">
+
+                    <i class="bi bi-three-dots-vertical"></i>
+
+                  </button>
+
+                  <ul class="dropdown-menu dropdown-menu-end"
+                      (click)="$event.stopPropagation()">
+
+                    <li>
+                      <button
+                        class="dropdown-item"
+                        (click)="abrirEditarComentario(comentario)">
+                        Editar comentario
+                      </button>
+                    </li>
+
+                    <li>
+                      <button
+                        class="dropdown-item text-danger"
+                        (click)="$event.stopPropagation(); eliminarComentario(comentario._id)">
+                        Eliminar comentario
+                      </button>
+                    </li>
+
+                  </ul>
+
+                </div>
+
+              </div>
+
+            }
+
+            <div class="d-flex align-items-center mb-3">
+
+              <img
+                [src]="comentario.usuario?.foto_perfil"
+                class="rounded-circle me-2"
+                width="40"
+                height="40"
+                style="object-fit: cover;">
+
+              <div>
+
+                <div class="fw-bold text-light">
+
+                  {{ comentario.usuario?.nombre }}
+                  {{ comentario.usuario?.apellido }}
+
+                </div>
+
+                <small class="text-secondary">
+
+                  @{{ comentario.usuario?.username }}
+
+                </small>
+
+              </div>
+
+            </div>
+
+            @if(comentario.contenido) {
+
+              <p
+                class="mb-3"
+                style="white-space: pre-wrap; color: #eaeaea;">
+
+                {{ comentario.contenido }}
+
+                @if(comentario.editado) {
+                  <span class="text-secondary ms-2" style="font-size: 0.8rem;">
+                    (editado)
+                  </span>
+                }
+
+              </p>
+
+            }
+
+            @if(comentario.imagen) {
+
+              <div class="d-flex justify-content-center mb-3">
+                <img
+                  [src]="comentario.imagen"
+                  class="img-fluid rounded"
+                  style="
+                  height: 250px;
+                  width: auto;
+                  object-fit: contain;
+                  max-width: 100%;
+                  ">
+              </div>
+
+            }
+
+            <div class="d-flex justify-content-end mb-2">
+              <small class="text-secondary">
+
+                {{ formatearFecha(comentario.createdAt) }}
+
+              </small>
+            </div>
+
+          </div>
+
+        </div>
+
+      }
+
+      @if(comentarios().length > 0) {
+
+        <div class="text-center mt-4">
+
+          @if(hayMasComentarios()) {
+
+            <button
+              class="btn btn-outline-light"
+              (click)="cargarComentarios()"
+              [disabled]="comentariosLoading()">
+
+              @if(comentariosLoading()) {
+                Cargando...
+              } @else {
+                Cargar más
+              }
+
+            </button>
+
+          } @else {
+
+            <p class="text-secondary">
+
+              Parece que llegaste al final
+
+            </p>
 
           }
 
@@ -155,3 +330,11 @@
   </div>
 
 </div>
+
+@if(mostrarModalEditar() && comentarioEditando()) {
+  <app-form-editar-comentario
+    [comentario]="comentarioEditando()"
+    (modalClosed)="cerrarModalEditar()"
+    (actualizado)="onComentarioActualizado($event)">
+  </app-form-editar-comentario>
+}
