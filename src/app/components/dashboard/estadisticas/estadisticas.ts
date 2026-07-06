@@ -101,7 +101,7 @@ export class Estadisticas {
       const publicaciones:any[] =
         await firstValueFrom(
           this.http.get<any[]>(
-            'http://localhost:3000/estadisticas/publicaciones-por-usuario',
+            'https://nuvia-back.vercel.app/estadisticas/publicaciones-por-usuario',
             {
               params
             }
@@ -133,7 +133,7 @@ export class Estadisticas {
       const comentarios:any[] =
         await firstValueFrom(
           this.http.get<any[]>(
-            'http://localhost:3000/estadisticas/comentarios',
+            'https://nuvia-back.vercel.app/estadisticas/comentarios',
             {
               params
             }
@@ -166,7 +166,7 @@ export class Estadisticas {
       const comentariosPublicacion:any[] =
         await firstValueFrom(
           this.http.get<any[]>(
-            'http://localhost:3000/estadisticas/comentarios-por-publicacion',
+            'https://nuvia-back.vercel.app/estadisticas/comentarios-por-publicacion',
             {
               params
             }

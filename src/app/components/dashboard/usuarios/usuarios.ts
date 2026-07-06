@@ -25,7 +25,7 @@ export class Usuarios {
   cargarUsuarios() {
     this.loading.set(true);
 
-    this.http.get<any[]>('http://localhost:3000/usuarios')
+    this.http.get<any[]>('https://nuvia-back.vercel.app/usuarios')
       .subscribe({
         next: (usuarios) => {
           this.usuarios.set(usuarios);
@@ -39,7 +39,7 @@ export class Usuarios {
   }
 
   cambiarEstado(id:string) {
-    this.http.delete(`http://localhost:3000/usuarios/${id}`)
+    this.http.delete(`https://nuvia-back.vercel.app/usuarios/${id}`)
       .subscribe({
 
         next: () => {
