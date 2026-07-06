@@ -37,4 +37,20 @@ export class Usuarios {
         }
       })
   }
+
+  cambiarEstado(id:string) {
+    this.http.delete(`http://localhost:3000/usuarios/${id}`)
+      .subscribe({
+
+        next: () => {
+          this.cargarUsuarios();
+        },
+
+        error: (error) => {
+          console.error(error);
+        }
+
+      });
+
+  }
 }

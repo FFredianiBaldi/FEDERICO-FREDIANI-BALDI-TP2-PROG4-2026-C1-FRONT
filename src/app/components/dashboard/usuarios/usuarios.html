@@ -27,6 +27,8 @@
               <th>Usuario</th>
               <th>Email</th>
               <th>Perfil</th>
+              <th>Estado</th>
+              <th></th>
             </tr>
           </thead>
 
@@ -34,7 +36,7 @@
 
             @for (usuario of usuarios(); track usuario._id) {
 
-              <tr>
+              <tr [class.usuario-inactivo]="!usuario.activo">
 
                 <td>
                   <img
@@ -60,7 +62,7 @@
 
                 <td>
 
-                  @if (usuario.perfil === 'administrador') {
+                  @if(usuario.perfil === 'administrador') {
 
                     <span class="badge bg-danger">
                       Administrador
@@ -76,9 +78,56 @@
 
                 </td>
 
+
+                <td>
+
+                  @if(usuario.activo) {
+
+                    <span class="badge bg-success">
+                      Activo
+                    </span>
+
+                  } @else {
+
+                    <span class="badge bg-dark">
+                      Inactivo
+                    </span>
+
+                  }
+
+                </td>
+
+
+                <td>
+
+                  @if(usuario.activo) {
+
+                    <button
+                      class="btn btn-danger btn-sm"
+                      (click)="cambiarEstado(usuario._id)">
+
+                      Inhabilitar
+
+                    </button>
+
+                  } @else {
+
+                    <button
+                      class="btn btn-success btn-sm"
+                      (click)="cambiarEstado(usuario._id)">
+
+                      Habilitar
+
+                    </button>
+
+                  }
+
+                </td>
+
+
               </tr>
 
-            }
+              }
 
             @if (usuarios().length === 0) {
 
