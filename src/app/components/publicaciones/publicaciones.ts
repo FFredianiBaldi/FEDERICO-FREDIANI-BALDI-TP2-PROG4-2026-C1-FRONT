@@ -4,10 +4,11 @@ import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth-service';
 import { Router } from '@angular/router';
 import { PublicacionForm } from './publicacion-form/publicacion-form';
+import { ModalPublicacion } from './modal-publicacion/modal-publicacion';
 
 @Component({
   selector: 'app-publicaciones',
-  imports: [FormsModule, PublicacionForm],
+  imports: [FormsModule, PublicacionForm, ModalPublicacion],
   templateUrl: './publicaciones.html',
   styleUrl: './publicaciones.css',
 })
@@ -25,6 +26,8 @@ export class Publicaciones {
   limit = 3;
   hayMas = signal(true);
   loading = signal(false);
+
+  publicacionSeleccionada = signal<any | null>(null);
 
   constructor(private http: HttpClient, public auth: AuthService) {
     this.cargarPublicaciones(true);
@@ -118,6 +121,15 @@ export class Publicaciones {
             )
           );
 
+          if(this.publicacionSeleccionada()?._id === id) {
+            this.publicacionSeleccionada.update(pub => ({
+              ...pub!,
+              likes: pub!.likes.filter(
+                (likeId:string) => likeId !== usuarioId
+              )
+            }))
+          }
+
         },
         error: (err) => console.error(err)
       });
@@ -143,6 +155,13 @@ export class Publicaciones {
                 : pub
             )
           );
+
+          if(this.publicacionSeleccionada()?._id === id) {
+            this.publicacionSeleccionada.update(pub => ({
+              ...pub!,
+              likes: [...(pub?.likes || []), usuarioId]
+            }))
+          }
 
         },
         error: (err) => console.error(err)
@@ -179,5 +198,9 @@ export class Publicaciones {
   onPublicacionCreada() {
     this.mostrarModalPublicacion.set(false);
     this.cargarPublicaciones(true);
+  }
+
+  abrirPublicacion(publicacion: any) {
+    this.publicacionSeleccionada.set(publicacion);
   }
 }

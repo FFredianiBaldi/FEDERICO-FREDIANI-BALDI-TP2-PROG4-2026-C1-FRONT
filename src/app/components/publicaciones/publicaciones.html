@@ -48,7 +48,7 @@
 
   @for(publicacion of publicaciones(); track publicacion._id) {
 
-  <div class="card publicacion-card shadow mb-4 position-relative">
+  <div class="card publicacion-card shadow mb-4 position-relative" role="button" style="z-index: 1;" (click)="abrirPublicacion(publicacion)">
 
 
     @if(puedeEliminar(publicacion)) {
@@ -60,18 +60,21 @@
           <button
             class="btn btn-sm btn-dark border-0"
             type="button"
-            data-bs-toggle="dropdown">
+            data-bs-toggle="dropdown"
+            (click)="$event.stopPropagation()"
+            >
 
-            <i class="bi bi-three-dots-vertical">...</i>
+            <i class="bi bi-three-dots-vertical"></i>
 
           </button>
 
-          <ul class="dropdown-menu dropdown-menu-end">
+          <ul class="dropdown-menu dropdown-menu-end"
+          (click)="$event.stopPropagation()">
 
             <li>
               <button
                 class="dropdown-item text-danger"
-                (click)="eliminarPublicacion(publicacion._id)">
+                (click)="$event.stopPropagation(); eliminarPublicacion(publicacion._id)">
                 Eliminar publicación
               </button>
             </li>
@@ -141,7 +144,7 @@
         class="d-flex align-items-center gap-2 likes-badge"
         [class.likes-badge-activo]="publicacion.likes?.includes(auth.usuario()?._id)"
         role="button"
-        (click)="toggleLike(publicacion)">
+        (click)="$event.stopPropagation(); toggleLike(publicacion)">
 
         <i
           class="bi"
@@ -150,7 +153,7 @@
         </i>
 
         <span class="fw-semibold text-light">
-          Likes: {{ publicacion.likes?.length || 0 }}
+          {{ publicacion.likes?.length || 0 }}
         </span>
 
       </span>
@@ -223,3 +226,13 @@
   }
 
 </div>
+
+@if(publicacionSeleccionada()) {
+
+  <app-modal-publicacion
+    [publicacion]="publicacionSeleccionada()"
+    (cerrarModal)="publicacionSeleccionada.set(null)"
+    (likeClick)="toggleLike($event)">
+  </app-modal-publicacion>
+
+}

@@ -51,9 +51,7 @@ export class Login {
         password: this.loginModel().password
       }
 
-      const usuario: any = await firstValueFrom(this.http.post('https://nuvia-back.vercel.app/autenticacion/login', payload));
-
-      this.authService.setUsuario(usuario);
+      this.authService.login(payload);
 
       this.router.navigate(['/']);
     } catch(error:any) {

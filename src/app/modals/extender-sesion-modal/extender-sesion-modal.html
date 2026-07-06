@@ -1,0 +1,63 @@
+@if(sessionService.mostrarModalSesion()) {
+
+  <div
+    class="position-fixed top-0 start-0 w-100 h-100"
+    style="
+      background: rgba(0,0,0,.5);
+      z-index: 9999999;
+    ">
+  </div>
+
+  <div
+    class="modal d-block"
+    tabindex="-1"
+    style="z-index: 99999999;">
+
+    <div class="modal-dialog modal-dialog-centered">
+
+      <div class="modal-content bg-dark text-light border-secondary">
+
+        <div class="modal-header border-secondary">
+
+          <h5 class="modal-title">
+            Sesión próxima a expirar
+          </h5>
+
+        </div>
+
+        <div class="modal-body">
+
+          <p class="mb-0">
+            Tu sesión expirará en 5 minutos.
+            ¿Deseás extenderla?
+          </p>
+
+        </div>
+
+        <div class="modal-footer border-secondary">
+
+          <button
+            class="btn btn-secondary"
+            (click)="this.cerrarSesion()">
+
+            Cerrar sesión
+
+          </button>
+
+          <button
+            class="btn btn-primary"
+            (click)="sessionService.extenderSesion()">
+
+            Extender sesión
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+}

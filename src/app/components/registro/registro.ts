@@ -102,18 +102,14 @@ export class Registro {
     }
 
     try{
-      await firstValueFrom(
-        this.http.post('https://nuvia-back.vercel.app/autenticacion/registro', formData)
-      );
+      this.authService.register(formData);
 
       const payload = {
         identificador: this.registerModel().email,
         password: this.registerModel().password
       }
 
-      const usuario: any = await firstValueFrom(this.http.post('https://nuvia-back.vercel.app/autenticacion/login', payload));
-
-      this.authService.setUsuario(usuario);
+      this.authService.login(payload);
 
       this.router.navigate(['/']);
     } catch(error:any) {

@@ -87,14 +87,7 @@ export class EditarPerfilForm {
     }
 
     try {
-      const updated: any = await firstValueFrom(
-        this.http.patch(
-          `https://nuvia-back.vercel.app/usuarios/${user._id}`,
-          formData
-        )
-      );
-
-      this.auth.setUsuario(updated);
+      const updated = await this.auth.update(formData, user._id)
 
       this.actualizado.emit(updated.username);
       this.cerrar();
