@@ -48,7 +48,7 @@
 
   @for(publicacion of publicaciones(); track publicacion._id) {
 
-  <div class="card publicacion-card shadow mb-4 position-relative" role="button" (click)="abrirPublicacion(publicacion)">
+  <div class="card publicacion-card shadow mb-4 position-relative" role="button" style="z-index: 1;" (click)="abrirPublicacion(publicacion)">
 
 
     @if(puedeEliminar(publicacion)) {

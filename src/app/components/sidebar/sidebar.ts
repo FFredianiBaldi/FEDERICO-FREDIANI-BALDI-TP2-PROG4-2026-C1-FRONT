@@ -2,6 +2,7 @@ import { Component, AfterViewInit, effect } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth-service';
 import * as bootstrap from 'bootstrap';
+import { ExtenderSesionModal } from '../../modals/extender-sesion-modal/extender-sesion-modal';
 
 @Component({
   selector: 'app-sidebar',
