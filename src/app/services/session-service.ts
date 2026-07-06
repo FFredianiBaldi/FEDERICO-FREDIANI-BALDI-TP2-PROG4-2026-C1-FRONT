@@ -51,7 +51,7 @@ export class SessionService {
       const data = localStorage.getItem('token');
       const token = data ? JSON.parse(data) : null;
 
-      const response = await firstValueFrom(this.http.post<{token:string}>(`http://localhost:3000/autenticacion/refresh`, {token}))
+      const response = await firstValueFrom(this.http.post<{token:string}>(`https://nuvia-back.vercel.app/autenticacion/refresh`, {token}))
 
       localStorage.setItem('token', JSON.stringify(response.token));
 

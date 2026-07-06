@@ -92,7 +92,7 @@ export class FormEditarComentario {
     try {
       const updated = await firstValueFrom(
         this.http.patch(
-          `http://localhost:3000/comentarios/${comentario._id}/${user._id}`,
+          `https://nuvia-back.vercel.app/comentarios/${comentario._id}/${user._id}`,
           formData
         )
       );

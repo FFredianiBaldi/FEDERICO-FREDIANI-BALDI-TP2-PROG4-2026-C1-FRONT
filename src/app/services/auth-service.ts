@@ -9,9 +9,7 @@ import { SessionService } from './session-service';
 })
 export class AuthService {
   private http = inject(HttpClient);
-  private apiUrl = (typeof window !== 'undefined' && window.location.hostname.includes('localhost'))
-    ? 'http://localhost:3000/autenticacion'
-    : 'https://nuvia-back.vercel.app/autenticacion'
+  private apiUrl = 'https://nuvia-back.vercel.app/autenticacion'
   private router = inject(Router);
   private sessionService = inject(SessionService);
 
@@ -52,7 +50,7 @@ export class AuthService {
   async update(userData: FormData, id:string) {
     const res: any = await firstValueFrom(
       this.http.patch(
-        `http://localhost:3000/usuarios/${id}`, userData
+        `https://nuvia-back.vercel.app/usuarios/${id}`, userData
       )
     );
 

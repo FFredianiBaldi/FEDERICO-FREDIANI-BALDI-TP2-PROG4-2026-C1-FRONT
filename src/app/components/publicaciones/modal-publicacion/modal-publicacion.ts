@@ -103,7 +103,7 @@ export class ModalPublicacion implements OnChanges{
     }
 
     this.http.post(
-      'http://localhost:3000/comentarios',
+      'https://nuvia-back.vercel.app/comentarios',
       formData
     ).subscribe({
       next: (comentarioCreado: any) => {
@@ -149,7 +149,7 @@ export class ModalPublicacion implements OnChanges{
       limit: number;
       comentarios: any[];
     }>(
-      `http://localhost:3000/comentarios/${this.publicacion._id}`,
+      `https://nuvia-back.vercel.app/comentarios/${this.publicacion._id}`,
       {
         params: {
           offset: reset ? 0 : this.offsetComentarios(),
@@ -196,7 +196,7 @@ export class ModalPublicacion implements OnChanges{
     if (!usuarioId) return;
 
     this.http.delete(
-      `http://localhost:3000/comentarios/${id}/remove/${usuarioId}`
+      `https://nuvia-back.vercel.app/comentarios/${id}/remove/${usuarioId}`
     ).subscribe({
       next: () => {
         this.comentarios.update(cs =>
