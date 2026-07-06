@@ -9,7 +9,7 @@ import { SessionService } from './session-service';
 })
 export class AuthService {
   private http = inject(HttpClient);
-  private apiUrl = 'https://nuvia-back.vercel.app/autenticacion'
+  private apiUrl = 'http://localhost:3000/autenticacion'
   private router = inject(Router);
   private sessionService = inject(SessionService);
 
