@@ -51,7 +51,7 @@ export class Login {
         password: this.loginModel().password
       }
 
-      this.authService.login(payload);
+      await this.authService.login(payload);
 
       this.router.navigate(['/']);
     } catch(error:any) {

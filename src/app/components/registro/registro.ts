@@ -102,14 +102,14 @@ export class Registro {
     }
 
     try{
-      this.authService.register(formData);
+      await this.authService.register(formData);
 
       const payload = {
         identificador: this.registerModel().email,
         password: this.registerModel().password
       }
 
-      this.authService.login(payload);
+      await this.authService.login(payload);
 
       this.router.navigate(['/']);
     } catch(error:any) {
