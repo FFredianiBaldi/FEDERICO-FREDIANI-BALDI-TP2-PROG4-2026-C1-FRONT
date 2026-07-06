@@ -1,0 +1,169 @@
+<div class="container">
+
+  @if (loading()) {
+    <div class="text-center py-5">
+      <div class="spinner-border"></div>
+    </div>
+  }
+
+  @if (!loading()) {
+
+    <div class="card bg-dark border-secondary shadow">
+
+      <div class="card-header">
+        <h4 class="mb-0 text-light">
+          Usuarios registrados
+        </h4>
+      </div>
+
+      <div class="card-body p-0">
+
+        <table class="table table-dark table-hover mb-0">
+
+          <thead>
+            <tr>
+              <th>Foto</th>
+              <th>Nombre</th>
+              <th>Usuario</th>
+              <th>Email</th>
+              <th>Perfil</th>
+              <th>Estado</th>
+              <th></th>
+            </tr>
+          </thead>
+
+          <tbody>
+
+            @for (usuario of usuarios(); track usuario._id) {
+
+              <tr [class.usuario-inactivo]="!usuario.activo">
+
+                <td>
+                  <img
+                    [src]="usuario.foto_perfil || 'default-avatar.jpg'"
+                    class="rounded-circle"
+                    width="50"
+                    height="50"
+                    style="object-fit: cover;">
+                </td>
+
+                <td>
+                  {{ usuario.nombre }}
+                  {{ usuario.apellido }}
+                </td>
+
+                <td>
+                  @{{ usuario.username }}
+                </td>
+
+                <td>
+                  {{ usuario.email }}
+                </td>
+
+                <td>
+
+                  @if(usuario.perfil === 'administrador') {
+
+                    <span class="badge bg-danger">
+                      Administrador
+                    </span>
+
+                  } @else {
+
+                    <span class="badge bg-secondary">
+                      Usuario
+                    </span>
+
+                  }
+
+                </td>
+
+
+                <td>
+
+                  @if(usuario.activo) {
+
+                    <span class="badge bg-success">
+                      Activo
+                    </span>
+
+                  } @else {
+
+                    <span class="badge bg-dark">
+                      Inactivo
+                    </span>
+
+                  }
+
+                </td>
+
+
+                <td>
+
+                  @if(usuario.activo) {
+
+                    <button
+                      class="btn btn-danger btn-sm"
+                      (click)="cambiarEstado(usuario._id)">
+
+                      Inhabilitar
+
+                    </button>
+
+                  } @else {
+
+                    <button
+                      class="btn btn-success btn-sm"
+                      (click)="cambiarEstado(usuario._id)">
+
+                      Habilitar
+
+                    </button>
+
+                  }
+
+                </td>
+
+
+              </tr>
+
+              }
+
+            @if (usuarios().length === 0) {
+
+              <tr>
+                <td colspan="5" class="text-center py-4 text-secondary">
+                  No hay usuarios registrados
+                </td>
+              </tr>
+
+            }
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+      <div class="card-footer bg-dark border-secondary text-center py-4">
+
+        <button
+          type="button"
+          class="btn btn-success rounded-circle shadow"
+          data-bs-toggle="modal"
+          data-bs-target="#crearUsuarioModal"
+          style="width: 60px; height: 60px;">
+
+          <i class="bi bi-plus-lg fs-4"></i>
+
+        </button>
+
+      </div>
+
+    </div>
+
+  }
+
+</div>
+
+<app-crear-usuario (usuarioCreado)="cargarUsuarios()"></app-crear-usuario>

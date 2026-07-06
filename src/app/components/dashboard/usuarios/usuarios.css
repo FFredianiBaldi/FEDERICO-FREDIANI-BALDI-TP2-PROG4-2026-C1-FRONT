@@ -1,0 +1,4 @@
+.usuario-inactivo {
+  opacity: 0.45;
+  filter: grayscale(80%);
+}
