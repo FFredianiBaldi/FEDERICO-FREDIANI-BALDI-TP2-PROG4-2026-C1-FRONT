@@ -2,11 +2,11 @@ import { Component, AfterViewInit, effect } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth-service';
 import * as bootstrap from 'bootstrap';
-import { ExtenderSesionModal } from '../../modals/extender-sesion-modal/extender-sesion-modal';
+import { FallbackImage } from "../../directives/fallback-image";
 
 @Component({
   selector: 'app-sidebar',
-  imports: [RouterLink],
+  imports: [RouterLink, FallbackImage],
   templateUrl: './sidebar.html',
   styleUrl: './sidebar.css',
 })

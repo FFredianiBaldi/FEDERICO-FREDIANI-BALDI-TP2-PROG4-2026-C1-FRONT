@@ -4,15 +4,19 @@ import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { form } from '@angular/forms/signals';
 import { FormEditarComentario } from './form-editar-comentario/form-editar-comentario';
+import { TimeAgoPipe } from '../../../pipes/time-ago-pipe';
+import { FallbackImage } from "../../../directives/fallback-image";
 
 @Component({
   selector: 'app-modal-publicacion',
   standalone: true,
-  imports: [FormsModule, FormEditarComentario],
+  imports: [FormsModule, FormEditarComentario, TimeAgoPipe, FallbackImage],
   templateUrl: './modal-publicacion.html',
   styleUrl: './modal-publicacion.css'
 })
 export class ModalPublicacion implements OnChanges{
+
+  apiUrl = 'https://nuvia-back.vercel.app'
 
   ngOnChanges(changes: SimpleChanges): void {
     if(changes['publicacion']?.currentValue) {
@@ -103,7 +107,7 @@ export class ModalPublicacion implements OnChanges{
     }
 
     this.http.post(
-      'https://nuvia-back.vercel.app/comentarios',
+      `${this.apiUrl}/comentarios`,
       formData
     ).subscribe({
       next: (comentarioCreado: any) => {
@@ -149,7 +153,7 @@ export class ModalPublicacion implements OnChanges{
       limit: number;
       comentarios: any[];
     }>(
-      `https://nuvia-back.vercel.app/comentarios/${this.publicacion._id}`,
+      `${this.apiUrl}/comentarios/${this.publicacion._id}`,
       {
         params: {
           offset: reset ? 0 : this.offsetComentarios(),
@@ -196,7 +200,7 @@ export class ModalPublicacion implements OnChanges{
     if (!usuarioId) return;
 
     this.http.delete(
-      `https://nuvia-back.vercel.app/comentarios/${id}/remove/${usuarioId}`
+      `${this.apiUrl}/comentarios/${id}/remove/${usuarioId}`
     ).subscribe({
       next: () => {
         this.comentarios.update(cs =>
@@ -234,5 +238,18 @@ export class ModalPublicacion implements OnChanges{
         c._id === updated._id ? updated : c
       )
     )
+  }
+
+  tieneLike(publicacion:any) {
+
+    const usuarioId = this.auth.usuario()?._id;
+
+    if(!usuarioId) return false;
+
+
+    return publicacion.likes?.some(
+      (like:any)=>like.usuarioId === usuarioId
+    );
+
   }
 }

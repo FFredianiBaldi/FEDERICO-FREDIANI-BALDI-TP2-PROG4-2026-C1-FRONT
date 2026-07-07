@@ -93,28 +93,36 @@
 
         <div class="d-flex align-items-center">
 
-          <img
-            [src]="publicacion.usuario?.foto_perfil || 'default-avatar.jpg'"
-            class="rounded-circle me-3 foto-perfil"
-            alt="Foto de perfil">
+          <a
+            [routerLink]="['/', publicacion.usuario?.username]"
+            (click)="$event.stopPropagation()"
+            class="text-decoration-none d-flex align-items-center">
 
-          <div>
+            <img
+              [src]="publicacion.usuario?.foto_perfil"
+              class="rounded-circle me-3 foto-perfil"
+              alt="Foto de perfil"
+              appFallbackImage>
 
-            <h6 class="mb-0 fw-bold text-light">
-              {{ publicacion.usuario?.nombre }}
-              {{ publicacion.usuario?.apellido }}
-            </h6>
+            <div>
 
-            <small class="username">
-              @{{ publicacion.usuario?.username }}
-            </small>
+              <h6 class="mb-0 fw-bold text-light">
+                {{ publicacion.usuario?.nombre }}
+                {{ publicacion.usuario?.apellido }}
+              </h6>
 
-          </div>
+              <small class="username">
+                @{{ publicacion.usuario?.username }}
+              </small>
+
+            </div>
+
+          </a>
 
         </div>
 
         <small class="fecha-publicacion">
-          {{ formatearFecha(publicacion.createdAt) }}
+          {{ publicacion.createdAt | timeAgo }}
         </small>
 
       </div>
@@ -125,7 +133,7 @@
 
       @if(publicacion.contenido) {
         <p class="contenido-publicacion">
-          {{ publicacion.contenido }}
+          {{ publicacion.contenido | truncate:120 }}
         </p>
       }
 
@@ -142,14 +150,14 @@
 
       <span
         class="d-flex align-items-center gap-2 likes-badge"
-        [class.likes-badge-activo]="publicacion.likes?.includes(auth.usuario()?._id)"
+        [class.likes-badge-activo]="tieneLike(publicacion)"
         role="button"
         (click)="$event.stopPropagation(); toggleLike(publicacion)">
 
         <i
           class="bi"
-          [class.bi-heart-fill]="publicacion.likes?.includes(auth.usuario()?._id)"
-          [class.bi-heart]="!publicacion.likes?.includes(auth.usuario()?._id)">
+          [class.bi-heart-fill]="tieneLike(publicacion)"
+          [class.bi-heart]="!tieneLike(publicacion)">
         </i>
 
         <span class="fw-semibold text-light">
@@ -198,26 +206,11 @@
 
     <div class="text-center my-4">
 
-      @if (hayMas()) {
-
-        <button
-          class="btn btn-outline-light px-4"
-          (click)="cargarPublicaciones()"
-          [disabled]="loading()">
-
-          @if (loading()) {
-            Cargando...
-          } @else {
-            Cargar más
-          }
-
-        </button>
-
-      } @else {
-
+      @if (!hayMas()) {
         <p class="text-secondary">
           Parece que llegaste al final
         </p>
+
 
       }
 

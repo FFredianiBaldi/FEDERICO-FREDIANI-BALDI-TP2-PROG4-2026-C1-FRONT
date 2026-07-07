@@ -5,11 +5,12 @@ import { CommonModule } from '@angular/common';
 import { EditarPerfilForm } from './editar-perfil-form/editar-perfil-form';
 import { AuthService } from '../../services/auth-service';
 import { Router } from '@angular/router';
+import { FallbackImage } from "../../directives/fallback-image";
 
 @Component({
   selector: 'app-perfil',
   standalone: true,
-  imports: [CommonModule, EditarPerfilForm],
+  imports: [CommonModule, EditarPerfilForm, FallbackImage],
   templateUrl: './perfil.html',
 })
 export class Perfil {
@@ -57,7 +58,7 @@ export class Perfil {
 
   cargarPublicaciones(usuarioId: string) {
     this.http.get<any[]>(
-      `https://nuvia-back.vercel.app/publicaciones?offset=0&limit=3&sortBy=fecha&order=desc`
+      `https://nuvia-back.vercel.app/publicaciones/usuario/${usuarioId}?offset=0&limit=3`
     ).subscribe({
       next: (pubs) => {
         const filtradas = pubs.filter(p => p.usuarioId === usuarioId);
@@ -90,5 +91,36 @@ export class Perfil {
     this.mostrarEditar.set(false);
     this.cargarPerfil(newUserName);
     this.router.navigate(['perfil', newUserName])
+  }
+
+  puedeEliminar(publicacion: any): boolean {
+    const usuario = this.auth.usuario();
+
+    if (!usuario) return false;
+
+    return (
+      usuario._id === publicacion.usuarioId ||
+      usuario.perfil === 'administrador'
+    );
+  }
+
+  eliminarPublicacion(id: string) {
+    const usuarioId = this.auth.usuario()?._id;
+
+    if (!usuarioId) return;
+
+    this.http.delete(
+      `https://nuvia-back.vercel.app/publicaciones/${id}`,
+      {
+        body: { usuarioId }
+      }
+    ).subscribe({
+      next: () => {
+        this.publicaciones.update(publicaciones =>
+          publicaciones.filter(p => p._id !== id)
+        );
+      },
+      error: err => console.error(err)
+    });
   }
 }

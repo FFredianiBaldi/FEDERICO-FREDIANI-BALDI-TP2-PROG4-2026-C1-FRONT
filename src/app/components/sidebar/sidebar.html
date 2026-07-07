@@ -36,11 +36,12 @@
               type="button">
 
         <img
-          [src]="auth.usuario().foto_perfil || 'default-avatar.jpg'"
+          [src]="auth.usuario().foto_perfil"
           class="rounded-circle"
           width="40"
           height="40"
-          style="object-fit: cover;">
+          style="object-fit: cover;"
+          appFallbackImage>
 
         <div class="text-start">
           <div class="fw-semibold text-light">

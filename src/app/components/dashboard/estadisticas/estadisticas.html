@@ -16,64 +16,64 @@
 
 <div class="card bg-dark border-secondary mb-4">
 
-<div class="card-body">
+  <div class="card-body">
 
 
-<h4 class="text-light mb-3">
-  Filtro de fechas
-</h4>
+    <h4 class="text-light mb-3">
+      Filtro de fechas
+    </h4>
 
 
-<div class="row">
+    <div class="row">
 
 
-<div class="col-md-5">
+      <div class="col-md-5">
 
-<label class="text-light">
-Desde
-</label>
+        <label class="text-light">
+          Desde
+        </label>
 
-<input
-type="date"
-class="form-control bg-black text-light border-secondary"
-[(ngModel)]="desde">
+        <input
+          type="date"
+          class="form-control bg-black text-light border-secondary"
+          [(ngModel)]="desde">
 
-</div>
-
-
-
-<div class="col-md-5">
-
-<label class="text-light">
-Hasta
-</label>
-
-<input
-type="date"
-class="form-control bg-black text-light border-secondary"
-[(ngModel)]="hasta">
-
-</div>
+      </div>
 
 
 
-<div class="col-md-2 d-flex align-items-end">
+      <div class="col-md-5">
 
-<button
-class="btn btn-primary w-100"
-(click)="cargarEstadisticas()">
+        <label class="text-light">
+          Hasta
+        </label>
 
-Aplicar
+        <input
+          type="date"
+          class="form-control bg-black text-light border-secondary"
+          [(ngModel)]="hasta">
 
-</button>
-
-</div>
-
-
-</div>
+      </div>
 
 
-</div>
+
+      <div class="col-md-2 d-flex align-items-end">
+
+        <button
+          class="btn btn-primary w-100"
+          (click)="cargarEstadisticas()">
+
+          Aplicar
+
+        </button>
+
+      </div>
+
+
+    </div>
+
+
+  </div>
 
 </div>
 
@@ -83,53 +83,22 @@ Aplicar
 
 <div class="card bg-dark border-secondary mb-4">
 
-<div class="card-header text-light">
-Publicaciones por usuario
-</div>
+  <div class="card-header text-light">
+    Publicaciones por usuario
+  </div>
 
 
-<div class="card-body">
+  <div class="card-body">
 
-<canvas
-baseChart
-[data]="publicacionesChartData"
-[type]="publicacionesChartType">
-</canvas>
+    <canvas
+      baseChart
+      [data]="publicacionesChartData"
+      [type]="publicacionesChartType">
+    </canvas>
 
-
-</div>
-
-</div>
-
-
-
-
-
-
-
-<div class="card bg-dark border-secondary mb-4">
-
-
-<div class="card-header text-light">
-Comentarios en el tiempo
-</div>
-
-
-<div class="card-body">
-
-
-<canvas
-baseChart
-[data]="comentariosChartData"
-[type]="comentariosChartType">
-</canvas>
-
+  </div>
 
 </div>
-
-
-</div>
-
 
 
 
@@ -140,25 +109,151 @@ baseChart
 <div class="card bg-dark border-secondary mb-4">
 
 
-<div class="card-header text-light">
-Comentarios por publicación
+  <div class="card-header text-light">
+    Comentarios en el tiempo
+  </div>
+
+
+  <div class="card-body">
+
+
+    <canvas
+      baseChart
+      [data]="comentariosChartData"
+      [type]="comentariosChartType">
+    </canvas>
+
+
+  </div>
+
+
 </div>
 
 
-<div class="card-body">
 
 
-<canvas
-baseChart
-[data]="comentariosPublicacionChartData"
-[type]="comentariosPublicacionChartType">
-</canvas>
+
+
+
+
+
+<div class="card bg-dark border-secondary mb-4">
+
+
+  <div class="card-header text-light">
+    Comentarios por publicación
+  </div>
+
+
+  <div class="card-body">
+
+
+    <canvas
+      baseChart
+      [data]="comentariosPublicacionChartData"
+      [type]="comentariosPublicacionChartType">
+    </canvas>
+
+
+  </div>
 
 
 </div>
 
 
+
+
+
+
+
+
+
+<div class="card bg-dark border-secondary mb-4">
+
+
+  <div class="card-header text-light">
+    Ingresos por usuario
+  </div>
+
+
+  <div class="card-body">
+
+
+    <canvas
+      baseChart
+      [data]="ingresosChartData"
+      [type]="ingresosChartType">
+    </canvas>
+
+
+  </div>
+
+
 </div>
+
+
+
+
+
+
+
+
+
+<div class="card bg-dark border-secondary mb-4">
+
+
+  <div class="card-header text-light">
+    Visitas al perfil por usuario
+  </div>
+
+
+  <div class="card-body">
+
+
+    <canvas
+      baseChart
+      [data]="visitasChartData"
+      [type]="visitasChartType">
+    </canvas>
+
+
+  </div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div class="card bg-dark border-secondary mb-4">
+
+
+  <div class="card-header text-light">
+    Me gusta otorgados por día
+  </div>
+
+
+  <div class="card-body">
+
+
+    <canvas
+      baseChart
+      [data]="likesChartData"
+      [type]="likesChartType">
+    </canvas>
+
+
+  </div>
+
+
+</div>
+
+
 
 
 

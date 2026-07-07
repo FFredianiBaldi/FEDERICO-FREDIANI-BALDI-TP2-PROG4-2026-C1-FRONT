@@ -68,6 +68,45 @@ export class Estadisticas {
     ]
   };
 
+    ingresosChartType: ChartType = 'bar';
+
+    ingresosChartData: ChartConfiguration['data'] = {
+      labels: [],
+      datasets: [
+        {
+          data: [],
+          label: 'Ingresos'
+        }
+      ]
+    };
+
+
+
+    visitasChartType: ChartType = 'bar';
+
+    visitasChartData: ChartConfiguration['data'] = {
+      labels: [],
+      datasets: [
+        {
+          data: [],
+          label: 'Visitas'
+        }
+      ]
+    };
+
+
+
+    likesChartType: ChartType = 'line';
+
+    likesChartData: ChartConfiguration['data'] = {
+      labels: [],
+      datasets: [
+        {
+          data: [],
+          label: 'Likes'
+        }
+      ]
+    };
 
 
   constructor() {
@@ -192,6 +231,91 @@ export class Estadisticas {
 
       };
 
+      const ingresos:any[] =
+        await firstValueFrom(
+          this.http.get<any[]>(
+            'https://nuvia-back.vercel.app/estadisticas/ingreso-por-usuario'
+          )
+        );
+
+
+      this.ingresosChartData = {
+
+        labels: ingresos.map(
+          u => '@' + u.username
+        ),
+
+        datasets:[
+          {
+            data: ingresos.map(
+              u => u.ingresos
+            ),
+            label:'Ingresos'
+          }
+        ]
+
+      };
+
+
+
+
+
+      const visitas:any[] =
+        await firstValueFrom(
+          this.http.get<any[]>(
+            'https://nuvia-back.vercel.app/estadisticas/visitas-por-usuario'
+          )
+        );
+
+
+      this.visitasChartData = {
+
+        labels: visitas.map(
+          u => '@' + u.username
+        ),
+
+        datasets:[
+          {
+            data: visitas.map(
+              u => u.visitas
+            ),
+            label:'Visitas'
+          }
+        ]
+
+      };
+
+
+
+
+
+      const likes:any[] =
+        await firstValueFrom(
+          this.http.get<any[]>(
+            'https://nuvia-back.vercel.app/estadisticas/likes-por-dia',
+            {
+              params
+            }
+          )
+        );
+
+
+      this.likesChartData = {
+
+        labels: likes.map(
+          l => l._id
+        ),
+
+        datasets:[
+          {
+            data: likes.map(
+              l => l.cantidad
+            ),
+            label:'Likes'
+          }
+        ]
+
+      };
 
 
     } catch(error) {

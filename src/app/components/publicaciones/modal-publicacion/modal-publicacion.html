@@ -25,11 +25,12 @@
         <div class="d-flex align-items-center mb-4">
 
           <img
-            [src]="publicacion.usuario?.foto_perfil || 'default-avatar.jpg'"
+            [src]="publicacion.usuario?.foto_perfil"
             class="rounded-circle me-3"
             width="60"
             height="60"
-            style="object-fit: cover;">
+            style="object-fit: cover;"
+            appFallbackImage>
 
           <div>
 
@@ -54,7 +55,11 @@
 
           <p
             class="fs-5 mb-4"
-            style="white-space: pre-wrap;">
+            style="
+              white-space: pre-wrap;
+              overflow-wrap: break-word;
+              word-break: break-word;
+            ">
             {{ publicacion.contenido }}
           </p>
 
@@ -83,19 +88,19 @@
       <div class="modal-footer border-secondary">
 
         <small class="text-secondary me-auto">
-          {{ formatearFecha(publicacion.createdAt) }}
+          {{ publicacion.createdAt | timeAgo }}
         </small>
 
         <span
           class="d-flex align-items-center gap-2 likes-badge"
-          [class.likes-badge-activo]="publicacion.likes?.includes(auth.usuario()?._id)"
+          [class.likes-badge-activo]="tieneLike(publicacion)"
           role="button"
           (click)="toggleLike()">
 
           <i
             class="bi"
-            [class.bi-heart-fill]="publicacion.likes?.includes(auth.usuario()?._id)"
-            [class.bi-heart]="!publicacion.likes?.includes(auth.usuario()?._id)">
+            [class.bi-heart-fill]="tieneLike(publicacion)"
+            [class.bi-heart]="!tieneLike(publicacion)">
           </i>
 
           <span class="fw-semibold text-light">
@@ -223,7 +228,8 @@
                 class="rounded-circle me-2"
                 width="40"
                 height="40"
-                style="object-fit: cover;">
+                style="object-fit: cover;"
+                appFallbackImage>
 
               <div>
 

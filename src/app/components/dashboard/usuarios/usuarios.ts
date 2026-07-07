@@ -1,10 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, inject, signal, ViewChild } from '@angular/core';
 import { CrearUsuario } from './crear-usuario/crear-usuario';
+import { RolPipe } from '../../../pipes/rol-pipe';
+import { FallbackImage } from "../../../directives/fallback-image";
 
 @Component({
   selector: 'app-usuarios',
-  imports: [CrearUsuario],
+  imports: [CrearUsuario, RolPipe, FallbackImage],
   templateUrl: './usuarios.html',
   styleUrl: './usuarios.css',
 })
