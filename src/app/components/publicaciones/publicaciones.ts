@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, inject, signal } from '@angular/core';
+import { Component, HostListener, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth-service';
 import { Router, RouterLink } from '@angular/router';
@@ -16,6 +16,10 @@ import { FallbackImage } from "../../directives/fallback-image";
   styleUrl: './publicaciones.css',
 })
 export class Publicaciones {
+
+
+
+  apiUrl = 'https://nuvia-back.vercel.app'
 
   private router = inject(Router);
 
@@ -36,6 +40,23 @@ export class Publicaciones {
     this.cargarPublicaciones(true);
   }
 
+  @HostListener('window:scroll')
+  onScroll() {
+    const scrollPosition =
+      window.innerHeight + window.scrollY;
+
+    const documentHeight =
+      document.documentElement.scrollHeight;
+
+    if (
+      scrollPosition >= documentHeight - 300 &&
+      this.hayMas() &&
+      !this.loading()
+    ) {
+      this.cargarPublicaciones();
+    }
+  }
+
   cargarPublicaciones(reset = false) {
 
     if (this.loading()) return;
@@ -51,7 +72,7 @@ export class Publicaciones {
     const backendSort = this.sortBy === 'likes' ? 'likes' : 'fecha';
 
     this.http.get<any[]>(
-      `https://nuvia-back.vercel.app/publicaciones?offset=${this.offset}&limit=${this.limit}&sortBy=${backendSort}&order=${this.order}`
+      `${this.apiUrl}/publicaciones?offset=${this.offset}&limit=${this.limit}&sortBy=${backendSort}&order=${this.order}`
     ).subscribe({
       next: (publicaciones) => {
 
@@ -86,91 +107,136 @@ export class Publicaciones {
     return `${dia}-${mes}-${anio}`;
   }
 
-  toggleLike(publicacion: any) {
+  toggleLike(publicacion:any) {
+
     const usuarioId = this.auth.usuario()?._id;
 
     if(!usuarioId) {
-      this.router.navigate(['/registro'])
+      this.router.navigate(['/registro']);
       return;
     }
 
+
     const id = publicacion._id;
 
-    const tieneLike = publicacion.likes?.includes(usuarioId);
 
-    if (tieneLike) {
+    const tieneLike = publicacion.likes?.some(
+      (like:any) => like.usuarioId === usuarioId
+    );
+
+
+    if(tieneLike) {
+
 
       this.http.delete(
-        'https://nuvia-back.vercel.app/publicaciones/like',
+        `${this.apiUrl}/publicaciones/like`,
         {
-          body: {
+          body:{
             usuarioId,
             id
           }
         }
-      ).subscribe({
-        next: () => {
+      )
+      .subscribe({
+
+        next:()=>{
+
 
           this.publicaciones.update(publicaciones =>
             publicaciones.map(pub =>
               pub._id === id
-                ? {
-                    ...pub,
-                    likes: pub.likes.filter(
-                      (likeId: string) => likeId !== usuarioId
-                    )
-                  }
-                : pub
+              ?
+              {
+                ...pub,
+                likes: pub.likes.filter(
+                  (like:any)=>like.usuarioId !== usuarioId
+                )
+              }
+              :
+              pub
             )
           );
 
-          if(this.publicacionSeleccionada()?._id === id) {
-            this.publicacionSeleccionada.update(pub => ({
+
+          if(this.publicacionSeleccionada()?._id === id){
+
+            this.publicacionSeleccionada.update(pub=>({
               ...pub!,
               likes: pub!.likes.filter(
-                (likeId:string) => likeId !== usuarioId
+                (like:any)=>like.usuarioId !== usuarioId
               )
-            }))
+            }));
+
           }
 
+
         },
-        error: (err) => console.error(err)
+
+        error:err=>console.error(err)
+
       });
+
+
 
     } else {
 
+
       this.http.post(
-        'https://nuvia-back.vercel.app/publicaciones/like',
+        `${this.apiUrl}/publicaciones/like`,
         {
           usuarioId,
           id
         }
-      ).subscribe({
-        next: () => {
+      )
+      .subscribe({
+
+        next:()=>{
+
+
+          const nuevoLike = {
+            usuarioId,
+            fecha:new Date().toISOString()
+          };
+
 
           this.publicaciones.update(publicaciones =>
             publicaciones.map(pub =>
               pub._id === id
-                ? {
-                    ...pub,
-                    likes: [...(pub.likes || []), usuarioId]
-                  }
-                : pub
+              ?
+              {
+                ...pub,
+                likes:[
+                  ...(pub.likes || []),
+                  nuevoLike
+                ]
+              }
+              :
+              pub
             )
           );
 
-          if(this.publicacionSeleccionada()?._id === id) {
-            this.publicacionSeleccionada.update(pub => ({
+
+          if(this.publicacionSeleccionada()?._id === id){
+
+            this.publicacionSeleccionada.update(pub=>({
               ...pub!,
-              likes: [...(pub?.likes || []), usuarioId]
-            }))
+              likes:[
+                ...(pub?.likes || []),
+                nuevoLike
+              ]
+            }));
+
           }
 
+
         },
-        error: (err) => console.error(err)
+
+        error:err=>console.error(err)
+
       });
 
     }
+
   }
 
   puedeEliminar(publicacion: any): boolean {
@@ -186,7 +252,7 @@ export class Publicaciones {
 
     if(!usuarioId) return;
 
-    this.http.delete(`https://nuvia-back.vercel.app/publicaciones/${id}`, {
+    this.http.delete(`${this.apiUrl}/publicaciones/${id}`, {
       body: {usuarioId}
     }).subscribe({
       next: () => {
@@ -205,5 +271,18 @@ export class Publicaciones {
 
   abrirPublicacion(publicacion: any) {
     this.publicacionSeleccionada.set(publicacion);
+  }
+
+  tieneLike(publicacion:any) {
+
+    const usuarioId = this.auth.usuario()?._id;
+
+    if(!usuarioId) return false;
+
+
+    return publicacion.likes?.some(
+      (like:any)=>like.usuarioId === usuarioId
+    );
+
   }
 }

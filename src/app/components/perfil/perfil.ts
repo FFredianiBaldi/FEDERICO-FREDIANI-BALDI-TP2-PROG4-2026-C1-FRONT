@@ -58,7 +58,7 @@ export class Perfil {
 
   cargarPublicaciones(usuarioId: string) {
     this.http.get<any[]>(
-      `http://localhost:3000/publicaciones/usuario/${usuarioId}?offset=0&limit=3`
+      `https://nuvia-back.vercel.app/publicaciones/usuario/${usuarioId}?offset=0&limit=3`
     ).subscribe({
       next: (pubs) => {
         const filtradas = pubs.filter(p => p.usuarioId === usuarioId);

@@ -55,7 +55,11 @@
 
           <p
             class="fs-5 mb-4"
-            style="white-space: pre-wrap;">
+            style="
+              white-space: pre-wrap;
+              overflow-wrap: break-word;
+              word-break: break-word;
+            ">
             {{ publicacion.contenido }}
           </p>
 
@@ -89,14 +93,14 @@
 
         <span
           class="d-flex align-items-center gap-2 likes-badge"
-          [class.likes-badge-activo]="publicacion.likes?.includes(auth.usuario()?._id)"
+          [class.likes-badge-activo]="tieneLike(publicacion)"
           role="button"
           (click)="toggleLike()">
 
           <i
             class="bi"
-            [class.bi-heart-fill]="publicacion.likes?.includes(auth.usuario()?._id)"
-            [class.bi-heart]="!publicacion.likes?.includes(auth.usuario()?._id)">
+            [class.bi-heart-fill]="tieneLike(publicacion)"
+            [class.bi-heart]="!tieneLike(publicacion)">
           </i>
 
           <span class="fw-semibold text-light">

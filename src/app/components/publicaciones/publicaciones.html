@@ -150,14 +150,14 @@
 
       <span
         class="d-flex align-items-center gap-2 likes-badge"
-        [class.likes-badge-activo]="publicacion.likes?.includes(auth.usuario()?._id)"
+        [class.likes-badge-activo]="tieneLike(publicacion)"
         role="button"
         (click)="$event.stopPropagation(); toggleLike(publicacion)">
 
         <i
           class="bi"
-          [class.bi-heart-fill]="publicacion.likes?.includes(auth.usuario()?._id)"
-          [class.bi-heart]="!publicacion.likes?.includes(auth.usuario()?._id)">
+          [class.bi-heart-fill]="tieneLike(publicacion)"
+          [class.bi-heart]="!tieneLike(publicacion)">
         </i>
 
         <span class="fw-semibold text-light">
@@ -206,26 +206,11 @@
 
     <div class="text-center my-4">
 
-      @if (hayMas()) {
-
-        <button
-          class="btn btn-outline-light px-4"
-          (click)="cargarPublicaciones()"
-          [disabled]="loading()">
-
-          @if (loading()) {
-            Cargando...
-          } @else {
-            Cargar más
-          }
-
-        </button>
-
-      } @else {
-
+      @if (!hayMas()) {
         <p class="text-secondary">
           Parece que llegaste al final
         </p>
+
 
       }
 
