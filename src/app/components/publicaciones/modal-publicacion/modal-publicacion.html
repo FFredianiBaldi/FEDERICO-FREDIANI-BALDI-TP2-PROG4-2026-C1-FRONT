@@ -25,11 +25,12 @@
         <div class="d-flex align-items-center mb-4">
 
           <img
-            [src]="publicacion.usuario?.foto_perfil || 'default-avatar.jpg'"
+            [src]="publicacion.usuario?.foto_perfil"
             class="rounded-circle me-3"
             width="60"
             height="60"
-            style="object-fit: cover;">
+            style="object-fit: cover;"
+            appFallbackImage>
 
           <div>
 
@@ -83,7 +84,7 @@
       <div class="modal-footer border-secondary">
 
         <small class="text-secondary me-auto">
-          {{ formatearFecha(publicacion.createdAt) }}
+          {{ publicacion.createdAt | timeAgo }}
         </small>
 
         <span
@@ -223,7 +224,8 @@
                 class="rounded-circle me-2"
                 width="40"
                 height="40"
-                style="object-fit: cover;">
+                style="object-fit: cover;"
+                appFallbackImage>
 
               <div>
 

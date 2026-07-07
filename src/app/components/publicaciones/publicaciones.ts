@@ -2,13 +2,16 @@ import { HttpClient } from '@angular/common/http';
 import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth-service';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { PublicacionForm } from './publicacion-form/publicacion-form';
 import { ModalPublicacion } from './modal-publicacion/modal-publicacion';
+import { TimeAgoPipe } from '../../pipes/time-ago-pipe';
+import { TruncatePipe } from '../../pipes/truncate-pipe';
+import { FallbackImage } from "../../directives/fallback-image";
 
 @Component({
   selector: 'app-publicaciones',
-  imports: [FormsModule, PublicacionForm, ModalPublicacion],
+  imports: [FormsModule, PublicacionForm, ModalPublicacion, TimeAgoPipe, TruncatePipe, FallbackImage, RouterLink],
   templateUrl: './publicaciones.html',
   styleUrl: './publicaciones.css',
 })

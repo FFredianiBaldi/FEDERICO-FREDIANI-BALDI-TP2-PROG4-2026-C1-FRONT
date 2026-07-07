@@ -40,11 +40,12 @@
 
                 <td>
                   <img
-                    [src]="usuario.foto_perfil || 'default-avatar.jpg'"
+                    [src]="usuario.foto_perfil"
                     class="rounded-circle"
                     width="50"
                     height="50"
-                    style="object-fit: cover;">
+                    style="object-fit: cover;"
+                    appFallbackImage>
                 </td>
 
                 <td>
@@ -62,19 +63,9 @@
 
                 <td>
 
-                  @if(usuario.perfil === 'administrador') {
-
-                    <span class="badge bg-danger">
-                      Administrador
-                    </span>
-
-                  } @else {
-
                     <span class="badge bg-secondary">
-                      Usuario
+                      {{usuario.perfil | rol}}
                     </span>
-
-                  }
 
                 </td>
 

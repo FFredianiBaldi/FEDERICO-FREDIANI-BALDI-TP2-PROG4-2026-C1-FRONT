@@ -19,11 +19,12 @@
       <div class="card-body text-center text-light">
 
         <img
-          [src]="usuario().foto_perfil || 'default-avatar.jpg'"
+          [src]="usuario().foto_perfil"
           class="rounded-circle mb-3"
           width="120"
           height="120"
-          style="object-fit: cover;">
+          style="object-fit: cover;"
+          appFallbackImage>
 
         <h3 class="fw-bold">
           {{ usuario().nombre }} {{ usuario().apellido }}
@@ -58,6 +59,43 @@
 
       <div class="card bg-dark border-secondary mb-3 shadow-sm">
 
+        @if(puedeEliminar(pub)) {
+
+          <div class="position-absolute top-0 end-0 m-2">
+
+            <div class="dropdown">
+
+              <button
+                class="btn btn-sm btn-dark border-0"
+                type="button"
+                data-bs-toggle="dropdown">
+
+                <i class="bi bi-three-dots-vertical"></i>
+
+              </button>
+
+              <ul class="dropdown-menu dropdown-menu-end">
+
+                <li>
+
+                  <button
+                    class="dropdown-item text-danger"
+                    (click)="eliminarPublicacion(pub._id)">
+
+                    Eliminar publicación
+
+                  </button>
+
+                </li>
+
+              </ul>
+
+            </div>
+
+          </div>
+
+        }
+
         <div class="card-body text-light">
 
           <div class="d-flex justify-content-between align-items-center mb-2">
@@ -66,7 +104,7 @@
               {{ pub.titulo }}
             </h6>
 
-            <small class="text-secondary">
+            <small class="text-secondary me-5">
               {{ formatearFecha(pub.createdAt) }}
             </small>
 

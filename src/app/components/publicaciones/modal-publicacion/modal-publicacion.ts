@@ -4,11 +4,13 @@ import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { form } from '@angular/forms/signals';
 import { FormEditarComentario } from './form-editar-comentario/form-editar-comentario';
+import { TimeAgoPipe } from '../../../pipes/time-ago-pipe';
+import { FallbackImage } from "../../../directives/fallback-image";
 
 @Component({
   selector: 'app-modal-publicacion',
   standalone: true,
-  imports: [FormsModule, FormEditarComentario],
+  imports: [FormsModule, FormEditarComentario, TimeAgoPipe, FallbackImage],
   templateUrl: './modal-publicacion.html',
   styleUrl: './modal-publicacion.css'
 })
