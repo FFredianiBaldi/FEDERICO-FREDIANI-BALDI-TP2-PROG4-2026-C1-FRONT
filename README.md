@@ -1,59 +1,62 @@
-# FEDERICOFREDIANIBALDITP2PROG42026C1FRONT
+# Nuvia — Frontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.7.
+Nuvia is a social network in the spirit of X (formerly Twitter), where users can share posts with images, comment on posts, like them, and interact with other people's profiles. Built as a university project to practice building a full-featured, real-world social platform from scratch.
 
-## Development server
+**Live demo:** [https://nuvia-coral.vercel.app/](https://nuvia-coral.vercel.app/)
 
-To start a local development server, run:
+This repository contains the **frontend** of Nuvia. It is a single-page application built with Angular that consumes a REST API built with NestJS (see the [backend repository](#) for details).
+
+## Features
+
+- User registration and login
+- Create and view posts (with image support)
+- Like posts
+- Comment on posts
+- Main feed
+- User profiles
+
+There are currently no additional features planned for this project.
+
+## Tech Stack
+
+- **Angular 21** — application framework
+- **Bootstrap** — UI styling and layout
+- **RxJS** — reactive state and async data handling
+- **JWT** — authentication tokens, handled through:
+  - **Route Guards** — protect authenticated routes
+  - **HTTP Interceptors** — automatically attach the JWT to outgoing requests
+
+## Architecture Notes
+
+Authentication is handled entirely on the client via JWT. Guards prevent unauthorized navigation to protected routes, and interceptors take care of injecting the token into every outgoing HTTP request to the backend API, keeping components free of authentication boilerplate.
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js and npm installed
+- The [Nuvia backend](#) running (or reachable) for the app to function correctly
+
+### Installation
+
+```bash
+npm install
+```
+
+### Run the development server
 
 ```bash
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+The app will be available at `http://localhost:4200/` by default.
 
-## Code scaffolding
+> No `.env` file is required for the frontend.
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## License
 
-```bash
-ng generate component component-name
-```
+This project is free to use without restrictions.
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Author
 
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+**Federico Frediani Baldi**
